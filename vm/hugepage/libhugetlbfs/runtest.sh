@@ -26,19 +26,27 @@
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Include beaker environment
-. ../../../cki_lib/libcki.sh || exit 1
-. /usr/share/beakerlib/beakerlib.sh
-. ./kvercmp.sh
+FILE=$(readlink -f $BASH_SOURCE)
+NAME=$(basename $FILE)
+CDIR=$(dirname $FILE)
 
-PACKAGE="libhugetlbfs"
-if grep -q "release [5-7].*" /etc/redhat-release; then
-	TESTVERSION=2.18
-else
-	TESTVERSION=2.21
+# Include beaker environment
+source $CDIR/../../../cki_lib/libcki.sh || exit 1
+source $CDIR/lib/kvercmp.sh
+
+LOOKASIDE="https://github.com/libhugetlbfs/libhugetlbfs/releases/download/"
+PACKAGE_NAME="libhugetlbfs"
+PACKAGE_VERSION="2.21"
+grep -q "release [5-7].*" /etc/redhat-release && PACKAGE_VERSION="2.18"
+TARGET=${PACKAGE_NAME}-${PACKAGE_VERSION}
+PACKAGE_URL="$LOOKASIDE/$PACKAGE_VERSION/$TARGET.tar.gz"
+bash $CDIR/utils/build.sh $PACKAGE_NAME $PACKAGE_VERSION $PACKAGE_URL
+if [ $? -ne 0 ]; then
+	echo "Oops, failed to build $TARGET"
+	rstrnt-report-result Build_${TARGET}_failed FAIL 1
+	exit 0
 fi
 
-TARGET=${PACKAGE}-${TESTVERSION}
 TESTAREA=/mnt/testarea
 WORK_DIR=${TARGET}/tests
 
@@ -188,7 +196,7 @@ rlJournalStart
         rlRun "hugeadm --pool-pages-max ${HPSIZE}:0"
 
         # Set up hugepage
-        huge_page_setup_helper.py > hpage_setup.txt <<EOF
+	/usr/bin/huge_page_setup_helper.py > hpage_setup.txt <<EOF
 ${HMEMSZ}
 hugepages
 hugepages root
