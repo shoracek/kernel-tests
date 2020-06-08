@@ -138,5 +138,6 @@ default_pmtu_cleanup()
 		ip netns del $net
 	done
 	modprobe -r veth
+	modprobe -r br_netfilter
 	modprobe -r bridge
 }
