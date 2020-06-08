@@ -30,6 +30,8 @@ source ${CDIR%/$RPATH}/networking/bridge/common/lib.sh || exit 1
 rhel_version=$(GetDistroRelease)
 rlJournalStart
     rlPhaseStartSetup
+        # br_netfilter would use bridge, and that would stop bridge from being removed
+        rlRun "modprobe -r br_netfilter" "0-255"
         rlRun -l "modinfo bridge"
 	modprobe -r dummy
 	rlRun "modprobe -nv dummy | grep 'numdummies=0'>/dev/null && spare_param='Y'" "0,1"
