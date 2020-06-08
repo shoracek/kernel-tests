@@ -162,6 +162,13 @@ do_net_config()
 	sed -i '/^\tpmtu_ipv[4,6]_fou[4,6]_exception/d' pmtu.sh
 	sed -i '/^\tpmtu_ipv[4,6]_gue[4,6]_exception/d' pmtu.sh
 	sed -i 's/exitcode=1/[ $ret -ne 2 ] \&\& exitcode=1/' pmtu.sh
+	# for test fib-onlink-tests.sh we need remove default IPv6 route
+	ip -6 route del default
+	# for test fcnal-test.sh
+	cp nettest /usr/local/bin/
+	# for l2tp.sh
+	modprobe l2tp_eth
+	modprobe l2tp_ip
 }
 
 do_net_forwarding_config()
