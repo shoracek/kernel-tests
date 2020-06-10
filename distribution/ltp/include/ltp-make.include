@@ -1,7 +1,7 @@
 # Beaker parameter TEST_VERSION can override the default
 TESTVERSION   = $(shell echo $$TEST_VERSION)
 ifeq (,$(TESTVERSION))
-TESTVERSION   = 20200120
+TESTVERSION   = 20200515
 endif
 export TESTVERSION
 # the task path may be different under the restraint harness if the task
@@ -43,7 +43,12 @@ $(TARGET).bz2:
 	wget -q $(DOWNLOAD_URL)/$(TARGET).bz2; \
 	if [ $$? -ne 0 -a x$(IS_DEVEL) = x ]; then \
 		echo "global sync seems not working correctly, using default location" ;\
-                wget https://github.com/linux-test-project/ltp/releases/download/$(TESTVERSION)/$(TARGET).tar.bz2 -O $(TARGET).bz2 ;\
+		wget -q https://github.com/linux-test-project/ltp/releases/download/$(TESTVERSION)/ltp-full-$(TESTVERSION).tar.bz2 ; \
+			if [ $$? -ne 0 ]; then \
+				echo "upstream download failed, giving up" ; \
+			else \
+				mv ltp-full-$(TESTVERSION).tar.bz2 ltp-full-$(TESTVERSION).bz2 ; \
+			fi \
 	fi
 
 $(TARGET): $(TARGET).bz2 clean
@@ -77,7 +82,13 @@ ifeq ($(TESTVERSION),20190930)
 	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-fallocate05-increase-FALLOCATE_SIZE.patch
 	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-sync_file_range02-remove-the-toplimit-of-write-back.patch
 endif
-
+ifeq ($(TESTVERSION),20200515)
+	@# Tips: this patch should be applied in single on ltp-next(version > 20180926)
+	@$(PATCH) < $(ABS_DIR)/INTERNAL/0001-rhel_only-migrate_page02-avoid-warning.patch
+	@$(PATCH) < $(ABS_DIR)/INTERNAL/0001-shmat03-ignore-EACCES.patch
+	@$(PATCH) < $(ABS_DIR)/INTERNAL/0001-Disable-btrfs-as-we-don-t-support-it-anymore.patch
+	@$(PATCH) < $(ABS_DIR)/INTERNAL/0001-Disable-zram-btrfs-support.patch
+endif
 	@# The following ones are for specific hardware/release
 ifneq (,$(filter 4 5 s390 s390x, $(OS_MAJOR_RELEASE) $(ARCH)))
 	@echo " - remove cfs sched hacbench in RHEL[45] and s390x"

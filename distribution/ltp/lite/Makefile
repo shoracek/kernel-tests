@@ -46,11 +46,8 @@ patch: patch-inc-tolerant patch-lite
 
 patch-lite:
 	@echo "============ Patch ltp-lite test suite. ============"
-ifeq ($(TESTVERSION),20190930)
-	cp -vf configs/RHELKT1LITE.20190930 RHELKT1LITE
-else
-	cp -vf configs/RHELKT1LITE.20200120 RHELKT1LITE
-endif
+	if ! ./is_baremetal.sh; then patch -d $(TARGET) -p1 < $(PATCHDIR)/ltp-include-relax-timer-thresholds-for-non-baremetal.patch; fi
+	cp -vf configs/RHELKT1LITE.20200515 RHELKT1LITE
 
 build: $(TARGET) build-all
 	chmod +x ./runtest.sh
@@ -71,6 +68,7 @@ $(METADATA):
 	@echo "Name:            $(TEST)" >$(METADATA)
 	@echo "Description:     Latest LTP test KernelTier1" >>$(METADATA)
 	@echo "Path:            $(TEST_DIR)" >>$(METADATA)
+	@echo "TestTime:        180m" >>$(METADATA)
 	@echo "TestVersion:     $(TESTVERSION)" >>$(METADATA)
 	@echo "License:         GPLv3" >>$(METADATA)
 	@echo "Requires:        automake autoconf procmail flex bison rsyslog sysklogd util-linux-ng rpm-build" >> $(METADATA)

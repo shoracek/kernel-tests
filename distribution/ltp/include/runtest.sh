@@ -65,6 +65,19 @@ check_cpu_cgroup ()
     # Move us to root cpu cgroup
     # see: Bug 773259 - tests don't run in root cpu cgroup with systemd
 
+    cpu_cgroup_mntpoint=$(mount | grep "type cgroup (.*cpu[,)]" | awk '{print $3}')
+    if [ -z "$cpu_cgroup_mntpoint" ]; then
+        echo "Couldn't find cgroup mount point. Is system using cgroup2?" | tee -a $OUTPUTDIR
+        mount | grep cgroup | tee -a $OUTPUTDIR
+        return
+    fi
+
+    [ -d $cpu_cgroup_mntpoint/system.slice/ ] || mkdir -p $cpu_cgroup_mntpoint/system.slice/
+    cat $cpu_cgroup_mntpoint/cpu.rt_runtime_us > $cpu_cgroup_mntpoint/system.slice/cpu.rt_runtime_us
+
+    cpu_path=$(cat /proc/self/cgroup | grep ":cpu[:,]" | sed "s/.*://")
+    cat $cpu_cgroup_mntpoint/cpu.rt_runtime_us > $cpu_cgroup_mntpoint/$cpu_path/cpu.rt_runtime_us
+
     if [ -e /proc/self/cgroup ]; then
         grep -i "cpu[,:]" /proc/self/cgroup | grep -q ":/$"
         ret=$?
@@ -78,7 +91,6 @@ check_cpu_cgroup ()
     else
         echo "cat /proc/self/cgroup" | tee -a $OUTPUTFILE
         cat /proc/self/cgroup | tee -a $OUTPUTFILE
-        cpu_cgroup_mntpoint=$(mount | grep "type cgroup (.*cpu[,)]" | awk '{print $3}')
         if [ -e "$cpu_cgroup_mntpoint/tasks" ]; then
             echo "Found root cpu cgroup tasks at: $cpu_cgroup_mntpoint/tasks" | tee -a $OUTPUTFILE
             echo $$ > $cpu_cgroup_mntpoint/tasks
@@ -255,6 +267,17 @@ LogDeceiver ()
     for k in $(cat ${LTPDIR}/KNOWNISSUE | grep -v '^#'); do
         sed -i '/'$k'/ s/FAIL/KNOW/' $OUTPUTDIR/$RUNTEST.log
     done
+}
+
+skip_testcase ()
+{
+    # skip tests defined in var SKIPTESTS, seperated by space
+    if [ -n "$SKIPTESTS" ]; then
+        echo -e ${SKIPTESTS// /"\n"} > SKIPTESTS
+        # skip file needs to be an absolute path or path relative to $LTPROOT
+        # use absolute path here
+        OPTS="$OPTS -S $PWD/SKIPTESTS"
+    fi
 }
 
 RunTest ()

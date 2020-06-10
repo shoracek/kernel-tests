@@ -1,0 +1,26 @@
+From a020a10289b0af86dbed0dfcc3a1e6289b1f2856 Mon Sep 17 00:00:00 2001
+From: Ping Fang <pifang@redhat.com>
+Date: Sun, 26 Apr 2020 22:24:07 +0800
+Subject: [PATCH] Disable zram btrfs support
+
+Signed-off-by: Ping Fang <pifang@redhat.com>
+---
+ testcases/kernel/device-drivers/zram/zram01.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/testcases/kernel/device-drivers/zram/zram01.sh b/testcases/kernel/device-drivers/zram/zram01.sh
+index 8de2c0cad..b22e98bdd 100755
+--- a/testcases/kernel/device-drivers/zram/zram01.sh
++++ b/testcases/kernel/device-drivers/zram/zram01.sh
+@@ -18,7 +18,7 @@ dev_num=4
+ zram_max_streams="2 3 5 8"
+ 
+ FS_SIZE="402653184"
+-FS_TYPE="btrfs"
++FS_TYPE="ext2"
+ 
+ RAM_SIZE=$(awk '/MemTotal:/ {print $2}' /proc/meminfo)
+ if [ "$RAM_SIZE" -lt 1048576 ]; then
+-- 
+2.21.1
+
