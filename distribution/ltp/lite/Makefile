@@ -46,14 +46,8 @@ patch: patch-inc-tolerant patch-lite
 
 patch-lite:
 	@echo "============ Patch ltp-lite test suite. ============"
-ifeq ($(TESTVERSION),20190930)
-	cp -vf configs/RHELKT1LITE.20190930 RHELKT1LITE
-else ifeq ($(TESTVERSION),20200120)
-	cp -vf configs/RHELKT1LITE.20200120 RHELKT1LITE
-else
 	if ! ./is_baremetal.sh; then patch -d $(TARGET) -p1 < $(PATCHDIR)/ltp-include-relax-timer-thresholds-for-non-baremetal.patch; fi
 	cp -vf configs/RHELKT1LITE.20200515 RHELKT1LITE
-endif
 
 build: $(TARGET) build-all
 	chmod +x ./runtest.sh
