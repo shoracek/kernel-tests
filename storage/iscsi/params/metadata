@@ -1,0 +1,13 @@
+[General]
+name=storage/iscsi/params
+owner=Filip Suba <fsuba@redhat.com>
+description=iSCSI parameters test
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=augeas;git;python3;wget
+softDependencies=python-devel;python3-devel;platform-python-devel
+repoRequires=cki_lib;storage/include

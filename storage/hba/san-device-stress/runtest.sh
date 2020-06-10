@@ -1,5 +1,6 @@
-#!/bin/sh
-# Copyright (c) 2019 Red Hat, Inc. All rights reserved.
+#!/bin/bash
+#
+# Copyright (c) 2019-2020 Red Hat, Inc. All rights reserved.
 #
 # This copyrighted material is made available to anyone wishing
 # to use, modify, copy, or redistribute it subject to the terms
@@ -15,14 +16,12 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 #
-#   Author: Marco Patalano <mpatalan@redhat.com>
 
-RESULT=PASS
-# Run main hba san
-./main.sh
+FILE=$(readlink -f $BASH_SOURCE)
+CDIR=$(dirname $FILE)
+TNAME=$(egrep '^name=' $CDIR/metadata | awk -F'=' '{print $2}')
 
-res=$?
-if [ $res != 0 ]; then
-    RESULT=FAIL
-fi
-rstrnt-report-result "storage/hba/san-device-stress" $RESULT $res
+bash $CDIR/main.sh
+rc=$?
+(( $rc == 0 )) && res="PASS" || res="FAIL"
+rstrnt-report-result "$TNAME" "$res" $rc

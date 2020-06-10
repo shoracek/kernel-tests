@@ -1,0 +1,11 @@
+[General]
+name=storage/hw_raid
+owner=Marco Patalano <mpatalan@redhat.com>
+description=Hardware RAID test
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+repoRequires=cki_lib

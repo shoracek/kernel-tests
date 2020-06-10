@@ -1,27 +1,27 @@
-#!/bin/sh
-# Copyright (c) 2016 Red Hat, Inc. All rights reserved.
+#!/bin/bash
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+# Copyright (c) 2016-2020 Red Hat, Inc. All rights reserved.
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# This copyrighted material is made available to anyone wishing
+# to use, modify, copy, or redistribute it subject to the terms
+# and conditions of the GNU General Public License version 2.
 #
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# This program is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied
+# warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+# PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public
+# License along with this program; if not, write to the Free
+# Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+# Boston, MA 02110-1301, USA.
+#
 
-#   Author: Marco Patalano <mpatalan@redhat.com>
+FILE=$(readlink -f $BASH_SOURCE)
+CDIR=$(dirname $FILE)
+TNAME=$(egrep '^name=' $CDIR/metadata | awk -F'=' '{print $2}')
 
-RESULT=PASS
-# Run main hw_raid
-./main.sh
-
-res=$?
-if [ $res != 0 ]; then
-    RESULT=FAIL
-fi
-rstrnt-report-result "storage/hw_raid" $RESULT $res
+bash $CDIR/main.sh
+rc=$?
+(( $rc == 0 )) && res="PASS" || res="FAIL"
+rstrnt-report-result "$TNAME" "$res" $rc
