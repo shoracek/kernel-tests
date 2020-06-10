@@ -35,7 +35,7 @@ include ltp-make.include
 
 # data files, .c files, scripts anything needed to either compile the test and/or run it.
 FILES=$(METADATA) runtest.sh knownissue.sh Makefile PURPOSE stagecase \
-	  kvercmp.sh ltp-make.include patches/
+	  kvercmp.sh ltp-make.include patches/ knownissue/
 
 .PHONY: all install download clean
 
@@ -47,10 +47,11 @@ $(METADATA): Makefile
 	@echo "Path:         $(TEST_DIR)"	>> $(METADATA)
 	@echo "License:      GPLv2" >> $(METADATA)
 	@echo "TestVersion:  $(TESTVERSION)"	>> $(METADATA)
+	@echo "TestTime:     5h" >> $(METADATA)
 	@echo "Description:  Linux Test Project - include">> $(METADATA)
 	@echo "RunFor:       kernel glibc" >> $(METADATA)
 	@echo "Requires:     @development " >> $(METADATA)
-	@echo "Requires:     procmail rsyslog sysklogd ntpdate util-linux util-linux-ng redhat-lsb bc wget" >> $(METADATA)
+	@echo "Requires:     procmail rsyslog sysklogd ntpdate util-linux util-linux-ng redhat-lsb bc wget bzip2" >> $(METADATA)
 	@echo "repoRequires: cki_lib" >> $(METADATA)
 	#@echo "Releases:     RHELServer5 RHEL6" >>$(METADATA)
 	@echo "Destructive:  no" >>$(METADATA)
