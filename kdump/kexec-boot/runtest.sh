@@ -43,7 +43,7 @@ KexecBoot()
                 grep -i  psci /var/log/messages | grep -i "is not implemented" && supported=0
             fi
             if [ "$supported" -eq 0 ]; then
-                Warn "- This aarch64 system doesn't support PSCI. Terminate the test."
+                Skip "- Warn: This aarch64 system doesn't support PSCI. Terminate the test."
                 return
             fi
         fi 
