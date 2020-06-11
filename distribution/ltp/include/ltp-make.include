@@ -67,21 +67,6 @@ patch-generic:
 	@echo "============ General Patch ============"
 	@echo " === applying general upstream fixes. ==="
 	@echo " === applying general internal fixes. ==="
-ifeq ($(TESTVERSION),20190930)
-	@# Tips: this patch should be applied in single on ltp-next(version > 20180926)
-	@$(PATCH) < $(ABS_DIR)/INTERNAL/0001-rhel_only-migrate_page02-avoid-warning.patch
-	@$(PATCH) < $(ABS_DIR)/INTERNAL/0001-shmat03-ignore-EACCES.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-acct-fix-version-check-on-big-endian-system.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-dynamic_debug-update-dmesg-grep-check.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-include-undefine-_LINUX_TYPES_H-if-including-old-sys.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-pcrypt_aead01-break-early-when-approaching-timeout.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-pkey01-build-fail-caused-by-MAP_HUGETLB-undefine.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-pt_test-skip-pt_disable_branch-on-Broadwell-CPUs.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-acct02-relax-ac_btime-checks.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-mbind04-terminate-child-processes.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-fallocate05-increase-FALLOCATE_SIZE.patch
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/0001-sync_file_range02-remove-the-toplimit-of-write-back.patch
-endif
 ifeq ($(TESTVERSION),20200515)
 	@# Tips: this patch should be applied in single on ltp-next(version > 20180926)
 	@$(PATCH) < $(ABS_DIR)/INTERNAL/0001-rhel_only-migrate_page02-avoid-warning.patch
@@ -110,18 +95,6 @@ ifeq ($(NXBIT), TRUE)
 endif
 ifeq ($(ARCH), aarch64)
 	@echo " - no aarch64 patches needed at this time"
-endif
-
-patch-newcase:
-	@echo "============ Applying for new testcases. ============"
-
-patch-hugetlb:
-	@echo "============ Applying ltp-hugetlb patches. ============"
-ifeq ($(TESTVERSION),20150903)
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/mem-hugetlb-Find-an-empty-region-to-use-in-hugemmap0.patch
-endif
-ifeq ($(TESTVERSION),20160126)
-	@$(PATCH) < $(ABS_DIR)/$(TESTVERSION)/hugemmap02.c-don-t-skip-cleanup-in-the-loop.patch
 endif
 
 patch-cgroups:
