@@ -145,7 +145,8 @@ nfnetlink_cttimeout
 nfnetlink_log
 nfnetlink_queue
 nfs
-nfsd
+# Disable nfsd module until BZ 1846235 is resolved
+# nfsd
 nfs_layout_flexfiles
 nfs_layout_nfsv41_files
 nf_tables
