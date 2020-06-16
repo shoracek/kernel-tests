@@ -228,7 +228,7 @@ fi
 echo "** Doing $ITERATIONS load/unload cycles of each module in the file $MODLIST **" | tee -a $OUTPUTFILE
 kernel_mod_dir="/lib/modules/`uname -r`"
 for (( i = 0; i < $ITERATIONS; i++)); do
-	for module in $(cat $MODLIST) ; do
+	for module in $(sed 's/#.*$//' $MODLIST) ; do
 		# there is no difference between _ and - in kernel module
 		# names, so convert all "-" to "_". Do this so things like grep
 		# work correctly later on.
