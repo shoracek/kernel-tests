@@ -156,6 +156,10 @@ function knownissue_filter()
 	tskip "nm01_sh" unfix
 	# Unable to load BPF programs on s390x/upstream kernels (FMK-1825)
 	is_arch "s390x" && tskip "bpf_prog01 bpf_prog02" unfix
+	# Bug 1842076 - ltp: ptrace09 PANIC: double fault, error_code: 0x0
+	tskip "ptrace09" fatal
+	# pty04 is unstable, actively being discussed in LTP ML
+	tskip "pty04" unfix
 
 	if is_rhel8; then
                 # ------- unfix ---------
