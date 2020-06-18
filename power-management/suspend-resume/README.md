@@ -1,13 +1,16 @@
 # Supend and Resume test.
-try to suspend and resume the system. The test requires non hypervisor machine. \
+Try to suspend and resume the system. The test requires non hypervisor machine.
 Test Maintainer: [Victor Ruiz](mailto:rvr@redhat.com) 
 
 ## How to run it
+Please refer to the top-level README.md for common dependencies.
 
-### Dependencies
-Please refer to the top-leve README.md for common dependencies. Test-specific dependencies will automatically be installed when executing 'make run'.
+### Install dependencies
+```bash
+root# bash ../../cki_bin/pkgs_install.sh metadata
+```
 
 ### Execute the test
 ```bash
-$ make run
+bash ./runtest.sh
 ```

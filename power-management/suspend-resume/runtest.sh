@@ -110,6 +110,9 @@ function setup ()
 	# sync system and rtc clocks
 	hwclock -w
 
+	echo "build binary time ..."
+	gcc -o time time.c
+
 }
 
 function print_rtc () {
@@ -247,7 +250,7 @@ function startSuspendResume ()
 
 function runTest ()
 {
-	if [ -z "${REBOOTCOUNT}" ] || [ "${REBOOTCOUNT}" -eq 0 ]; then
+	if [[ -z $RSTRNT_REBOOTCOUNT || $RSTRNT_REBOOTCOUNT == 0 ]]; then
 		setup
 	fi
 

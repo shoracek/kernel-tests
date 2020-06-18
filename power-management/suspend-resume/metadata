@@ -1,0 +1,12 @@
+[General]
+name=power-management/suspend-resume
+owner=Victor Ruiz <rvr@redhat.com>
+description=Checking boottime after system suspend
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=autoconf;automake;gcc;gettext;git;kernel-devel;make;pciutils;virt-what;wget
+repoRequires=cki_lib
