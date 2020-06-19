@@ -29,6 +29,7 @@
 # Include libraries
 . ../../cki_lib/libcki.sh || exit 1
 
+TEST="iommu/boot/"
 # file to write custom boot options (from CMDLINEARGS)
 CustomBootOptions=custom-boot-options.txt
 # file to use if no custom boot options passed
@@ -46,7 +47,7 @@ function bootOptions() {
 
     while read -r line; do
         # Check to see if new options have been set yet
-	if [[ -z "${REBOOTCOUNT}" ||  "${REBOOTCOUNT}" -eq 0 ]] || \
+	if [[ -z "${RSTRNT_REBOOTCOUNT}" ||  "${RSTRNT_REBOOTCOUNT}" -eq 0 ]] || \
 	    [[ ! -a $CurrentBootOptions ]]; then
 	    echo "Start test." | tee -a "${OUTPUTFILE}"
 	    echo "Old cmdline: $(cat /proc/cmdline)" | tee -a "${OUTPUTFILE}"
@@ -140,7 +141,7 @@ function cleanupTest() {
 }
 
 if [[ -n $CMDLINEARGS ]]; then
-    if [ -z "${REBOOTCOUNT}" ] || [ "${REBOOTCOUNT}" -eq 0 ]; then
+    if [ -z "${RSTRNT_REBOOTCOUNT}" ] || [ "${RSTRNT_REBOOTCOUNT}" -eq 0 ]; then
        IFS=':'
        for i in $CMDLINEARGS; do
 	   echo $i >> $CustomBootOptions
