@@ -160,6 +160,9 @@ function knownissue_filter()
 	tskip "ptrace09" fatal
 	# pty04 is unstable, actively being discussed in LTP ML
 	tskip "pty04" unfix
+	# nsproxy: restore EINVAL for non-namespace file descriptor
+	# https://lists.linux.it/pipermail/ltp/2020-June/017467.html
+	tskip "setns01" unfix
 
 	if is_rhel8; then
                 # ------- unfix ---------
