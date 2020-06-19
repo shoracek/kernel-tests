@@ -1,9 +1,9 @@
 <job retention_tag="scratch">
   <whiteboard>RHEL8 LTP</whiteboard>
   <recipeSet priority="Normal">
-    <recipe whiteboard="" role="RECIPE_MEMBERS" ks_meta="harness='restraint-rhts beakerlib'" kernel_options="" kernel_options_post="">
+    <recipe whiteboard="" role="None" ks_meta="harness='restraint-rhts beakerlib'" kernel_options="" kernel_options_post="">
       <autopick random="false"/>
-      <watchdog panic="ignore"/>
+      <watchdog panic="None"/>
       <packages/>
       <ks_appends/>
       <repos/>
@@ -14,13 +14,17 @@
           <distro_arch op="=" value="x86_64"/>
         </and>
       </distroRequires>
-      <hostRequires/>
+      <hostRequires>
+        <system_type value="Machine"/>
+      </hostRequires>
       <partitions/>
-      <task name="/distribution/check-install" role="STANDALONE"/>
+      <task name="/distribution/check-install" role="STANDALONE">
+        <fetch url="https://github.com/beaker-project/beaker-core-tasks/archive/master.zip#check-install"/>
+      </task>
       <task name="LTP" role="STANDALONE">
-        <fetch url="https://github.com/CKI-project/tests-beaker/archive/master.zip#distribution/ltp-upstream/lite"/>
+        <fetch url="https://gitlab.com/cki-project/kernel-tests/-/archive/master/kernel-tests-master.zip#distribution/ltp/lite"/>
         <dependencies>
-          <dependency url="https://github.com/linux-test-project/ltp/releases/download/20200120/ltp-full-20200120.tar.bz2"/>
+          <dependency url="https://github.com/linux-test-project/ltp/releases/download/20200515/ltp-full-20200515.tar.bz2"/>
         </dependencies>
       </task>
     </recipe>
