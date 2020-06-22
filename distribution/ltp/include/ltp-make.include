@@ -38,22 +38,20 @@ else
 PATCH         = -patch --forward -p1 -d $(TARGET)
 endif
 
-$(TARGET).bz2:
+$(TARGET).tar.bz2:
 	@echo "============ Download package ============"
-	wget -q $(DOWNLOAD_URL)/$(TARGET).bz2; \
+	wget -q $(DOWNLOAD_URL)/$(TARGET).tar.bz2; \
 	if [ $$? -ne 0 -a x$(IS_DEVEL) = x ]; then \
 		echo "global sync seems not working correctly, using default location" ;\
 		wget -q https://github.com/linux-test-project/ltp/releases/download/$(TESTVERSION)/ltp-full-$(TESTVERSION).tar.bz2 ; \
 			if [ $$? -ne 0 ]; then \
 				echo "upstream download failed, giving up" ; \
-			else \
-				mv ltp-full-$(TESTVERSION).tar.bz2 ltp-full-$(TESTVERSION).bz2 ; \
 			fi \
 	fi
 
-$(TARGET): $(TARGET).bz2 clean
+$(TARGET): $(TARGET).tar.bz2 clean
 	@echo "============ Unzip package ============"
-	tar xjf $(TARGET).bz2
+	tar xjf $(TARGET).tar.bz2
 
 # Critical patches
 # 1. If a patch fixes installation issue
