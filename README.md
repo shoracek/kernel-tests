@@ -1,4 +1,4 @@
-# Beaker tasks used with [skt](https://github.com/RH-FMK/skt) runner
+# Beaker tasks used with [skt](https://gitlab.com/cki-project/skt) runner
 
 ## How to run tests
 Here is a list of common prerequisites for all beaker tests. Test-specific dependencies and steps can be found in the README.md within each test's directory.
