@@ -18,9 +18,6 @@
         <system_type value="Machine"/>
       </hostRequires>
       <partitions/>
-      <task name="/distribution/check-install" role="STANDALONE">
-        <fetch url="https://github.com/beaker-project/beaker-core-tasks/archive/master.zip#check-install"/>
-      </task>
       <task name="LTP" role="STANDALONE">
         <fetch url="https://gitlab.com/cki-project/kernel-tests/-/archive/master/kernel-tests-master.zip#distribution/ltp/lite"/>
         <dependencies>
