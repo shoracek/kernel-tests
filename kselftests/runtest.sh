@@ -195,7 +195,6 @@ do_tc_test()
 	# prepare evn
 	rpm -q clang || dnf install -y clang valgrind
 	modprobe -r veth
-	pushd $EXEC_DIR/tc-testing
 
 	# extend test timeout
 	sed -i '/TIMEOUT/s/12/180/' tdc_config.py
@@ -242,6 +241,7 @@ for item in $TEST_ITEMS; do
 	grep -q "cd $item$" selftests/run_kselftest.sh || \
 		{ test_skip "$item test not find in run_kselftest.sh" && continue; }
 
+	pushd $EXEC_DIR/$item
 	if [ "$item" == "tc-testing" ]; then
 		do_tc_test
 		continue
@@ -252,7 +252,6 @@ for item in $TEST_ITEMS; do
 	total_num=$(echo ${total_tests} | wc -w)
 	FAIL=0 num=0 name=""
 
-	pushd $EXEC_DIR/$item
 	do_${_item}_config || continue
 
 	for name in ${total_tests}; do
