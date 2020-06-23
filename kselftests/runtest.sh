@@ -30,27 +30,14 @@
 # CHECK_UNINVES: also check uninvestigated tests result, default is false
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 . ./include.sh
+. ./specific_fun.sh
 #-------------------- Setup --------------------
-EXEC_DIR="$PWD/selftests"
 SKIP=4
-
-# Test items
 LOG_ONCE=0
-TEST_ITEMS=${TEST_ITEMS:-"net net/forwarding bpf tc-testing"}
-
-DEFAULT_IFACE=$(ip route | awk '/default/{match($0,"dev ([^ ]+)",M); print M[1]; exit}')
+EXEC_DIR="$PWD/selftests"
 TOTAL_MEM=$(free -m | awk '/Mem/ {print $2}')
-
-skip_tests=(
-# CONFIG_TEST_BPF is not set
-test_bpf.sh
-)
-
-# Tests in this list need large memory
-large_mem_tests=(
-tc-tests/filters/concurrency.json
-tc-tests/filters/tests.json
-)
+TEST_ITEMS=${TEST_ITEMS:-"net net/forwarding bpf tc-testing"}
+DEFAULT_IFACE=$(ip route | awk '/default/{match($0,"dev ([^ ]+)",M); print M[1]; exit}')
 
 debug_info()
 {
@@ -109,36 +96,6 @@ run_test()
 	else
 		return $ret
 	fi
-}
-
-# For upstream kselftest testing, we need a pre-build selftest tar ball url
-install_kselftests()
-{
-	mkdir selftests
-	pushd selftests
-	wget --no-check-certificate $CKI_SELFTESTS_URL -O kselftest.tar.gz
-	tar zxf kselftest.tar.gz
-	popd
-	[ -f selftests/run_kselftest.sh ] && return 0 || return 1
-}
-
-install_netsniff()
-{
-	dnf install -y jq netsniff-ng
-	which mausezahn && return 0 || return 1
-}
-
-install_smcroute()
-{
-	which smcroute && return 0
-	yum install -y libcap-devel
-	smc_v="2.4.4"
-	wget https://github.com/troglobit/smcroute/releases/download/${smc_v}/smcroute-${smc_v}.tar.gz
-	tar zxf smcroute-${smc_v}.tar.gz
-	pushd smcroute-${smc_v}
-	./autogen.sh && ./configure --sysconfdir=/etc --localstatedir=/var && make && make install
-	popd
-	which smcroute && return 0 || return 1
 }
 
 # @arg1: test name
@@ -268,7 +225,6 @@ do_tc_test()
 
 #-------------------- Start Test --------------------
 setup_env
-[ ! "$CKI_SELFTESTS_URL" ] && test_skip_exit "CKI_SELFTESTS_URL not find"
 install_kselftests || test_fail_exit "install kselftests failed"
 
 run "uname -r"
