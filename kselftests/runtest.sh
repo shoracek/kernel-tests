@@ -109,11 +109,11 @@ get_test_list()
 	if [ $name == "net/forwarding" ]; then
 		test_list=$(find net/forwarding -maxdepth 1 -perm -g=x -type f | sed "s/net\/forwarding\///")
 	else
-		start_line=$(grep -n "Running tests in $name" run_kselftest.sh | cut -f1 -d:)
+		start_line=$(grep -n "cd $name$" run_kselftest.sh | cut -f1 -d:)
 		sed -n "${start_line},$ p" run_kselftest.sh > ${name}.list
 		end_line=$(grep -n "cd \$ROOT" ${name}.list | head -n1 | cut -f1 -d:)
 		sed -i "${end_line},$ d" ${name}.list
-		sed -i "1,3 d" ${name}.list
+		sed -i "1,2 d" ${name}.list
 		test_list=$(cat ${name}.list | awk -F'"' '{print $2}')
 	fi
 	popd &> /dev/null
@@ -239,7 +239,7 @@ reset_net_env
 submit_log "$EXEC_DIR/run_kselftest.sh"
 
 for item in $TEST_ITEMS; do
-	grep -q "Running tests in $item" selftests/run_kselftest.sh || \
+	grep -q "cd $item$" selftests/run_kselftest.sh || \
 		{ test_skip "$item test not find in run_kselftest.sh" && continue; }
 
 	if [ "$item" == "tc-testing" ]; then
