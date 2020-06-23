@@ -179,8 +179,6 @@ do_net_forwarding_config()
 	cp forwarding.config.sample forwarding.config
 }
 
-do_bpf_config() { return 0; }
-
 do_tc_test()
 {
 	# Start tc test
@@ -252,7 +250,9 @@ for item in $TEST_ITEMS; do
 	total_num=$(echo ${total_tests} | wc -w)
 	FAIL=0 num=0 name=""
 
-	do_${_item}_config || continue
+	if type do_${_item}_config &>/dev/null; then
+		do_${_item}_config || continue
+	fi
 
 	for name in ${total_tests}; do
 		num=$(($num + 1))
