@@ -14,8 +14,20 @@ tc-tests/filters/tests.json
 )
 
 # For upstream kselftest testing, we need a pre-build selftest tar ball url
+install_upstream_iproute()
+{
+	dnf install -y git glibc-devel elfutils-devel elfutils-libelf-devel libmnl-devel libpcap
+	git clone git://git.kernel.org/pub/scm/network/iproute2/iproute2.git
+	pushd iproute2
+	./configure && make && make install || \
+		test_warn "upstream iproute2 install failed"
+	popd
+}
+
 install_kselftests()
 {
+	# use upstream iproute2 for testing
+	install_upstream_iproute
 	mkdir selftests
 	pushd selftests
 	wget --no-check-certificate $CKI_SELFTESTS_URL -O kselftest.tar.gz
