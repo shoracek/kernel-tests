@@ -163,6 +163,8 @@ function knownissue_filter()
 	# nsproxy: restore EINVAL for non-namespace file descriptor
 	# https://lists.linux.it/pipermail/ltp/2020-June/017467.html
 	tskip "setns01" unfix
+	# https://lists.linux.it/pipermail/ltp/2020-June/017701.html
+	tskip "ptrace08" unfix
 
 	if is_rhel8; then
                 # ------- unfix ---------
