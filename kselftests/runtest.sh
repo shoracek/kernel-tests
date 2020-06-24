@@ -30,27 +30,14 @@
 # CHECK_UNINVES: also check uninvestigated tests result, default is false
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 . ./include.sh
+. ./specific_fun.sh
 #-------------------- Setup --------------------
-EXEC_DIR="$PWD/selftests"
 SKIP=4
-
-# Test items
 LOG_ONCE=0
-TEST_ITEMS=${TEST_ITEMS:-"net net/forwarding bpf tc-testing"}
-
-DEFAULT_IFACE=$(ip route | awk '/default/{match($0,"dev ([^ ]+)",M); print M[1]; exit}')
+EXEC_DIR="$PWD/selftests"
 TOTAL_MEM=$(free -m | awk '/Mem/ {print $2}')
-
-skip_tests=(
-# CONFIG_TEST_BPF is not set
-test_bpf.sh
-)
-
-# Tests in this list need large memory
-large_mem_tests=(
-tc-tests/filters/concurrency.json
-tc-tests/filters/tests.json
-)
+TEST_ITEMS=${TEST_ITEMS:-"net net/forwarding bpf tc-testing"}
+DEFAULT_IFACE=$(ip route | awk '/default/{match($0,"dev ([^ ]+)",M); print M[1]; exit}')
 
 debug_info()
 {
@@ -111,36 +98,6 @@ run_test()
 	fi
 }
 
-# For upstream kselftest testing, we need a pre-build selftest tar ball url
-install_kselftests()
-{
-	mkdir selftests
-	pushd selftests
-	wget --no-check-certificate $CKI_SELFTESTS_URL -O kselftest.tar.gz
-	tar zxf kselftest.tar.gz
-	popd
-	[ -f selftests/run_kselftest.sh ] && return 0 || return 1
-}
-
-install_netsniff()
-{
-	dnf install -y jq netsniff-ng
-	which mausezahn && return 0 || return 1
-}
-
-install_smcroute()
-{
-	which smcroute && return 0
-	yum install -y libcap-devel
-	smc_v="2.4.4"
-	wget https://github.com/troglobit/smcroute/releases/download/${smc_v}/smcroute-${smc_v}.tar.gz
-	tar zxf smcroute-${smc_v}.tar.gz
-	pushd smcroute-${smc_v}
-	./autogen.sh && ./configure --sysconfdir=/etc --localstatedir=/var && make && make install
-	popd
-	which smcroute && return 0 || return 1
-}
-
 # @arg1: test name
 get_test_list()
 {
@@ -152,11 +109,11 @@ get_test_list()
 	if [ $name == "net/forwarding" ]; then
 		test_list=$(find net/forwarding -maxdepth 1 -perm -g=x -type f | sed "s/net\/forwarding\///")
 	else
-		start_line=$(grep -n "Running tests in $name" run_kselftest.sh | cut -f1 -d:)
+		start_line=$(grep -n "cd $name$" run_kselftest.sh | cut -f1 -d:)
 		sed -n "${start_line},$ p" run_kselftest.sh > ${name}.list
 		end_line=$(grep -n "cd \$ROOT" ${name}.list | head -n1 | cut -f1 -d:)
 		sed -i "${end_line},$ d" ${name}.list
-		sed -i "1,3 d" ${name}.list
+		sed -i "1,2 d" ${name}.list
 		test_list=$(cat ${name}.list | awk -F'"' '{print $2}')
 	fi
 	popd &> /dev/null
@@ -205,6 +162,13 @@ do_net_config()
 	sed -i '/^\tpmtu_ipv[4,6]_fou[4,6]_exception/d' pmtu.sh
 	sed -i '/^\tpmtu_ipv[4,6]_gue[4,6]_exception/d' pmtu.sh
 	sed -i 's/exitcode=1/[ $ret -ne 2 ] \&\& exitcode=1/' pmtu.sh
+	# for test fib-onlink-tests.sh we need remove default IPv6 route
+	ip -6 route del default
+	# for test fcnal-test.sh
+	cp nettest /usr/local/bin/
+	# for l2tp.sh
+	modprobe l2tp_eth
+	modprobe l2tp_ip
 }
 
 do_net_forwarding_config()
@@ -214,8 +178,6 @@ do_net_forwarding_config()
 	install_smcroute || { test_fail "install smcrouted for forwarding test failed" && return 1; }
 	cp forwarding.config.sample forwarding.config
 }
-
-do_bpf_config() { return 0; }
 
 do_tc_test()
 {
@@ -231,7 +193,6 @@ do_tc_test()
 	# prepare evn
 	rpm -q clang || dnf install -y clang valgrind
 	modprobe -r veth
-	pushd $EXEC_DIR/tc-testing
 
 	# extend test timeout
 	sed -i '/TIMEOUT/s/12/180/' tdc_config.py
@@ -268,7 +229,6 @@ do_tc_test()
 
 #-------------------- Start Test --------------------
 setup_env
-[ ! "$CKI_SELFTESTS_URL" ] && test_skip_exit "CKI_SELFTESTS_URL not find"
 install_kselftests || test_fail_exit "install kselftests failed"
 
 run "uname -r"
@@ -276,9 +236,10 @@ reset_net_env
 submit_log "$EXEC_DIR/run_kselftest.sh"
 
 for item in $TEST_ITEMS; do
-	grep -q "Running tests in $item" selftests/run_kselftest.sh || \
+	grep -q "cd $item$" selftests/run_kselftest.sh || \
 		{ test_skip "$item test not find in run_kselftest.sh" && continue; }
 
+	pushd $EXEC_DIR/$item
 	if [ "$item" == "tc-testing" ]; then
 		do_tc_test
 		continue
@@ -289,8 +250,9 @@ for item in $TEST_ITEMS; do
 	total_num=$(echo ${total_tests} | wc -w)
 	FAIL=0 num=0 name=""
 
-	pushd $EXEC_DIR/$item
-	do_${_item}_config || continue
+	if type do_${_item}_config &>/dev/null; then
+		do_${_item}_config || continue
+	fi
 
 	for name in ${total_tests}; do
 		num=$(($num + 1))
