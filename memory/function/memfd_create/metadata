@@ -1,7 +1,7 @@
 [General]
-name=memory/function/kaslr
-owner=Chunyu Hu <chuhu@redhat.com>
-description=kaslr testing
+name=memory/function/memfd_create
+owner=Shu Wang <shuwang@redhat.com>
+description=Test for memfd_create syscall
 license=GPLv3
 confidential=no
 destructive=no
