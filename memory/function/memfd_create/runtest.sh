@@ -29,6 +29,8 @@
 . /usr/share/beakerlib/beakerlib.sh || exit 1
 . ../../../cki_lib/libcki.sh || exit 1
 
+TEST="memory/function/memfd_create"
+
 gcc t_memfd_create.c -o t_memfd_create &&
 gcc t_get_seals.c -o t_get_seals
 if [ $? != 0 ]; then
