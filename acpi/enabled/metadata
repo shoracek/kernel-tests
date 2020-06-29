@@ -1,0 +1,10 @@
+[General]
+name=acpi/enabled
+owner=Jeff Bastian <jbastian@redhat.com>
+description=ACPI Enabled test
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
