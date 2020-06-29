@@ -1,0 +1,12 @@
+[General]
+name=power-management/cpufreq/sys_cpufreq
+owner=Erik Hamera <ehamera@redhat.com>
+description=Check CPU frequency
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=dmidecode;kernel-tools;virt-what
+repoRequires=cki_lib;power-management/common

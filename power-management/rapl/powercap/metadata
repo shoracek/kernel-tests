@@ -1,0 +1,12 @@
+[General]
+name=power-management/rapl/powercap
+owner=Erik Hamera <ehamera@redhat.com>
+description=Confirm RAPL is supported
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=virt-what
+repoRequires=cki_lib;power-management/common
