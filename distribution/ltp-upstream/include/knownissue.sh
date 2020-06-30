@@ -123,9 +123,6 @@ function knownissue_filter()
 	tskip "copy_file_range02" unfix 
 	# Issue TBD
 	tskip "madvise09" fatal
-	# https://github.com/linux-test-project/ltp/issues/611
-	tskip "ksm03.* ksm04.*" fatal
-	tskip "ksm02.*" unfix
 	# Bug 1660161 - [RHEL8] ltp/generic commands mkswap01 fails to create by-UUID device node in aarch64
 	# Issue TBD
 	tskip "memfd_create03" unfix
