@@ -308,6 +308,12 @@ function rpm_install()
     cki_print_warning "No package kernel-devel-${KVER} found, skipping!"
     cki_print_warning "Note that some tests might require the package and can fail!"
   fi
+  if $YUM install -y "${PACKAGE_NAME}-modules-extra-${KVER}" > /dev/null; then
+    cki_print_success "Installed ${PACKAGE_NAME}-modules-extra-${KVER} successfully"
+  else
+    cki_print_warning "No package kernel-modules-extra-${KVER} found, skipping!"
+    cki_print_warning "Note that some tests might require the package and can fail!"
+  fi
   if $YUM install -y "${PACKAGE_NAME}-headers-${KVER}" > /dev/null; then
     cki_print_success "Installed ${PACKAGE_NAME}-headers-${KVER} successfully"
   else
