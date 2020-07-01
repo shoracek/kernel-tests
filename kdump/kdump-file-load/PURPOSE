@@ -1,0 +1,1 @@
+Test for kdump panic with kexec_file_load call

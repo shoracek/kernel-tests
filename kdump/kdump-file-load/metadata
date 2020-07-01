@@ -1,0 +1,11 @@
+[General]
+name=kdump/kdump-file-load
+owner=Kdump QE <kdump-qe-list@redhat.com>
+description=kdump test with kexec_file_load call
+license=GPLv3
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+repoRequires=kdump/include;cki_lib
