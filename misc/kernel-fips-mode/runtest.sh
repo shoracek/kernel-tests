@@ -105,7 +105,10 @@ rlJournalStart
         
         # Disable FIPS mode.
         rlRun "fips-mode-setup --disable" 0
-        rlRun "rm -f /etc/dracut.conf.d/40-fips.conf /etc/system-fips && dracut -v -f" 0
+
+	# BZ#1850647 - workaround.
+	# rlRun "rm -f /etc/dracut.conf.d/40-fips.conf /etc/system-fips && dracut -v -f" 0
+	rlRun "rm -f /etc/system-fips" 0
 
         # Create reboot indication file.
         rlRun "touch /var/tmp/fips-disabled" 0
