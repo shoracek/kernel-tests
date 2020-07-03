@@ -278,14 +278,13 @@ function install_xfstests_git_upstream ()
 	echo $repo $GITREPO $GITBRANCH
 	rm -rf xfstests xfstests-dev
 	if [ "$GITBRANCH" != "" ];then
-		git clone --depth 1 --branch "$GITBRANCH" "$GITREPO"
+		git clone --depth 1 --branch "$GITBRANCH" "$GITREPO" ||
+		git clone --depth 1 --branch "$GITBRANCH" "$GITREPO_PLANB"
 	else
-		git clone --depth 1 "$GITREPO"
+		git clone --depth 1 "$GITREPO" ||
+		git clone --depth 1 "$GITREPO_PLANB"
 	fi
-	res=$?
-	if [ $res -ne 0 ]; then
-		return $res
-	fi
+	[ -d $repo ] || return 1
 
 	cd "$repo"
 	make
