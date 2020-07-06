@@ -190,8 +190,10 @@ function install_fio_git_upstream()
 	if [ $? -eq 0 ]; then
 		pushd fio
 		local last_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+		# fio-3.20 breaks build on RHEL7
+		[[ `uname -r` =~ el7 ]] && last_tag=fio-3.19
 		echoo "Choose fio $last_tag"
-		git checkout -b $last_tag
+		git checkout -b $last_tag $last_tag
 		make >> ../build-fio-upstream.log 2>&1
 		make install >> ../build-fio-upstream.log 2>&1
 		popd
