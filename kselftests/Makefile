@@ -79,7 +79,7 @@ $(METADATA): Makefile
 # add any other packages for which your test ought to run here
 	@echo "Requires:     tar autoconf automake" >> $(METADATA)
 	@echo "Requires:     wget iproute-tc jq netsniff-ng" >> $(METADATA)
-	@echo "Requires:     clang valgrind" >> $(METADATA)
+	@echo "Requires:     clang valgrind bison bpftool flex" >> $(METADATA)
 	@echo "Requires:     $(PACKAGE_NAME)" >> $(METADATA)
 
 # You may need other fields here; see the documentation

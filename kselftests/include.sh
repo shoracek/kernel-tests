@@ -1,7 +1,7 @@
 #!/bin/bash
-[ ! "$JOBID" ] && rm -rf logs && mkdir logs && export LOG_DIR="$PWD/logs"
+[ ! "$RSTRNT_JOBID" ] && rm -rf logs && mkdir logs && export LOG_DIR="$PWD/logs"
 
-if [ ! "$JOBID" ]; then
+if [ ! "$RSTRNT_JOBID" ]; then
 	RED='\E[1;31m'
 	GRN='\E[1;32m'
 	YEL='\E[1;33m'
@@ -10,7 +10,7 @@ fi
 
 new_outputfile()
 {
-	[ "$JOBID" ] && mktemp /mnt/testarea/tmp.XXXXXX || mktemp $LOG_DIR/tmp.XXXXXX
+	[ "$RSTRNT_JOBID" ] && mktemp /mnt/testarea/tmp.XXXXXX || mktemp $LOG_DIR/tmp.XXXXXX
 }
 
 setup_env()
@@ -40,14 +40,14 @@ log()
 submit_log()
 {
 	for file in $@; do
-		[ "$JOBID" ] && rstrnt-report-log -l $file || cp $file $LOG_DIR/
+		[ "$RSTRNT_JOBID" ] && rstrnt-report-log -l $file || cp $file $LOG_DIR/
 	done
 }
 
 test_pass()
 {
 	echo -e "\n:: [  PASS  ] :: Test '"$1"'" >> $OUTPUTFILE
-	if [ $JOBID ]; then
+	if [ $RSTRNT_JOBID ]; then
 		rstrnt-report-result "${TEST}/$1" "PASS"
 	else
 		echo -e "::::::::::::::::"
@@ -60,7 +60,7 @@ test_fail()
 {
 	SCORE=${2:-$FAIL}
 	echo -e ":: [  FAIL  ] :: Test '"$1"'" >> $OUTPUTFILE
-	if [ $JOBID ]; then
+	if [ $RSTRNT_JOBID ]; then
 		rstrnt-report-result "${TEST}/$1" "FAIL" "$SCORE"
 	else
 		echo -e ":::::::::::::::::"
@@ -72,7 +72,7 @@ test_fail()
 test_warn()
 {
 	echo -e "\n:: [  WARN  ] :: Test '"$1"'" | tee -a $OUTPUTFILE
-	if [ $JOBID ]; then
+	if [ $RSTRNT_JOBID ]; then
 		rstrnt-report-result "${TEST}/$1" "WARN"
 	else
 		echo -e "\n:::::::::::::::::"
@@ -84,7 +84,7 @@ test_warn()
 test_skip()
 {
 	echo -e "\n:: [  SKIP  ] :: Test '"$1"'" | tee -a $OUTPUTFILE
-	if [ $JOBID ]; then
+	if [ $RSTRNT_JOBID ]; then
 		rstrnt-report-result "${TEST}/$1" SKIP 0
 	else
 		echo -e "\n:::::::::::::::::"
