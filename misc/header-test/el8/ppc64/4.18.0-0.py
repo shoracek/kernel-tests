@@ -7,3 +7,5 @@ def setup(exc):
     SA_FAMILY_T = "sys/socket.h"
     SOCKADDR = 'sys/socket.h'
 
+    exc['asm/papr_pdsm.h'] = (['* #define PAGE_SIZE (1UL << 16)'],
+                              OK, 'PAGE_SIZE')
