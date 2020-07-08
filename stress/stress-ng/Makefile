@@ -25,7 +25,8 @@ FILES=	$(METADATA) \
     runtest.sh \
     Makefile \
     PURPOSE \
-    *.stressors
+    *.stressors \
+    stress-ng-dccp.te
 
 .PHONY: clean run
 
@@ -64,6 +65,7 @@ $(METADATA):
 	@echo "Requires:	gcc"					>> $(METADATA)
 	@echo "Requires:	wget"					>> $(METADATA)
 	@echo "Requires:	dmidecode"				>> $(METADATA)
+	@echo "Requires:	rpmdevtools"				>> $(METADATA)
 	@echo "Requires:	libaio-devel"				>> $(METADATA)
 	@echo "Requires:	libattr-devel"				>> $(METADATA)
 	@echo "Requires:	libbsd-devel"				>> $(METADATA)

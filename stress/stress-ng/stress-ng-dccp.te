@@ -1,0 +1,33 @@
+module stress-ng-dccp 1.0;
+
+require {
+	type unconfined_t;
+	class dccp_socket {
+		accept
+		bind
+		connect
+		create
+		getattr
+		getopt
+		listen
+		read
+		setopt
+		shutdown
+		write
+	};
+}
+
+#============= unconfined_t ==============
+allow unconfined_t self:dccp_socket {
+	accept
+	bind
+	connect
+	create
+	getattr
+	getopt
+	listen
+	read
+	setopt
+	shutdown
+	write
+};
