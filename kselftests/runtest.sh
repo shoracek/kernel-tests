@@ -32,7 +32,6 @@
 . ./include.sh
 . ./specific_fun.sh
 #-------------------- Setup --------------------
-TEST="kselftests"
 SKIP=4
 LOG_ONCE=0
 EXEC_DIR="$PWD/selftests"
