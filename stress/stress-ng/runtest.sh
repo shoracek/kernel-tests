@@ -99,6 +99,19 @@ EOF
         sed -ie '/af-alg/d' cpu.stressors
     fi
 
+    # stress-ng-dccp is blocked by SELinux (see RHBZ 1459941) on RHEL-7.x with
+    # selinux-policy-3.13.1-175.el7 and earlier, so generate an SELinux module
+    # to allow DCCP sockets
+    if grep -q 'Red Hat Enterprise Linux.*release 7.*' /etc/redhat-release ; then
+        rpmdev-vercmp "$(rpm -q --qf '%{epochnum}:%{version}-%{release}\n' selinux-policy)" "0:3.13.1-175.el7" >/dev/null
+        if [ $? -eq 12 ]; then
+            rlRun "yum -y install checkpolicy policycoreutils policycoreutils-python" 0 "Installing SELinux development tools"
+            rlRun "checkmodule -M -m stress-ng-dccp.te -o stress-ng-dccp.mod" 0 "Compiling stress-ng-dccp SELinux module"
+            rlRun "semodule_package -o stress-ng-dccp.pp -m stress-ng-dccp.mod" 0 "Packaging stress-ng-dccp SELinux module"
+            rlRun "semodule -i stress-ng-dccp.pp" 0 "Installing stress-ng-dccp SELinux module"
+        fi
+    fi
+
 rlPhaseEnd
 
 rlPhaseStartTest
