@@ -1,0 +1,11 @@
+[General]
+name=storage/hba/san-device-stress
+owner=Marco Patalano <mpatalan@redhat.com>
+description=Stress test on san device
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+repoRequires=cki_lib

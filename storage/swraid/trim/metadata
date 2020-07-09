@@ -1,0 +1,13 @@
+[General]
+name=storage/swraid/trim
+owner=Changhui Zhong <czhong@redhat.com>
+description=TRIM support functional test
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=bc;iscsi-initiator-utils;mdadm
+softDependencies=scsi-target-utils
+repoRequires=cki_lib;storage/swraid/common

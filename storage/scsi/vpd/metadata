@@ -1,0 +1,12 @@
+[General]
+name=storage/scsi/vpd
+owner=Guazhang <guazhang@redhat.com>
+description=SCSI device vpd test
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=device-mapper-multipath;sg3_utils
+repoRequires=cki_lib;storage/swraid/common

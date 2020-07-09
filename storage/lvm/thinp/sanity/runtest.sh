@@ -1,10 +1,35 @@
 #!/bin/sh
 
+TNAME="storage/lvm/thinp/sanity"
+
 # Source the common test script helpers
 . ../../../../cki_lib/libcki.sh || exit 1
 
 PS4='+ $(date "+%s.%N")\011 '
 #set -x
+
+IOZONE="iozone3_414"
+LOOKASIDE="http://cki-artifacts.s3.us-east-2.amazonaws.com/lookaside/static"
+function build_iozone
+{
+	echo "--- Download iozone ---"
+	typeset target=$IOZONE
+	typeset target_tarball=${target}.tar.gz
+	typeset target_tarball_url="$LOOKASIDE/$target_tarball"
+
+	rm -f $target_tarball
+	wget --tries=10 -q $target_tarball_url || return 1
+
+	echo "--- Extract iozone ---"
+	rm -rf $target
+	tar zxf $target_tarball || return 1
+
+	echo "--- Build iozone ---"
+	make -C $target/src/current/ linux || return 1
+	cp -f $target/src/current/iozone ./iozone || return 1
+
+	return 0
+}
 
 storage_path=/mnt/testarea
 i=0
@@ -51,7 +76,7 @@ function clean_loop_dev()
 	test -f "$file" && rm -f $file
 }
 
-	
+
 function rcmd()
 {
 	local cmd="$*"
@@ -61,7 +86,7 @@ function rcmd()
 	_ret=$?
 	cat cmdlog.txt | tee -a $OUTPUTFILE
 	echo " --> ret $_ret" | tee -a $OUTPUTFILE
-	ret=$((ret | $_ret))	
+	ret=$((ret | $_ret))
 }
 
 size_free=`df -BM $storage_path | tail -1 | awk '{ print $4 }' | sed "s/M//"`
@@ -70,9 +95,18 @@ size_requested=1024
 
 # SKIP test if there's not enough space on target device
 if [[ $size_requested -gt $size_free ]]; then
-  rstrnt-report-result $TEST SKIP $OUTPUTFILE
-  exit
+	rstrnt-report-result $TNAME SKIP 0
+	exit 0
 fi
+
+# Build IOZONE for later use
+build_iozone
+if [ $? -ne 0 ]; then
+	echo "Oops, failed to build iozone" | tee -a $OUTPUTFILE
+	rstrnt-report-result $TNAME FAIL 1
+	exit 0
+fi
+
 rcmd make_loop_dev loopdev1 512M
 rcmd make_loop_dev loopdev2 512M
 
@@ -142,9 +176,9 @@ rcmd pvs
 echo "Test finished" | tee -a $OUTPUTFILE
 
 if [ $ret -eq 0 ]; then
-	rstrnt-report-result finished PASS 0
+	rstrnt-report-result $TNAME PASS 0
 else
-	rstrnt-report-result finished FAIL $ret
+	rstrnt-report-result $TNAME FAIL $ret
 fi
 
 exit 0

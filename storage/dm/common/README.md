@@ -4,12 +4,14 @@ code can be found at https://gitlab.com/rh-kernel-stqe/python-stqe.
 Test Maintainer: [Jakub Krysl](mailto:jkrysl@redhat.com)
 
 ## How to run it
+Please refer to the top-level README.md for common dependencies.
 
-### Dependencies
-Please refer to the top-level README.md for common dependencies. Test-specific
-dependencies will automatically be installed when executing 'make run'.
+### Install dependencies
+```bash
+root# bash ../../../cki_bin/pkgs_install.sh metadata
+```
 
 ### Execute the test
 ```bash
-$ make run
+bash ./runtest.sh
 ```

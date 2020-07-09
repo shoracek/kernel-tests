@@ -17,19 +17,12 @@
 # Boston, MA 02110-1301, USA.
 #
 
-if [[ ${_DEBUG_MODE} == "yes" ]]; then
-	#
-	# XXX: Don't involve the test harness if debug mode is enabled which
-	#      is very helpful to manually run a single case without invoking
-	#      function rstrnt-report-result() provided by test harness
-	#
-	function rstrnt-report-result { echo "$@"; }
-else
-	source ../../cki_lib/libcki.sh
-fi
+FILE=$(readlink -f $BASH_SOURCE)
+NAME=$(basename $FILE)
+CDIR=$(dirname $FILE)
+TNAME="storage/blk"
 
-NAME=$(basename $0)
-CDIR=$(dirname $0)
+source $CDIR/../../cki_lib/libcki.sh
 
 function is_rhel7
 {
@@ -85,13 +78,13 @@ function do_test
 
 	typeset -i ret=0
 	if [[ $result == "PASS" ]]; then
-		rstrnt-report-result "$TEST/tests/$test_case" PASS 0
+		rstrnt-report-result "$TNAME/tests/$test_case" PASS 0
 		ret=0
 	elif [[ $result == "FAIL" ]]; then
-		rstrnt-report-result "$TEST/tests/$test_case" FAIL 1
+		rstrnt-report-result "$TNAME/tests/$test_case" FAIL 1
 		ret=1
 	else
-		rstrnt-report-result "$TEST/tests/$test_case" WARN 2
+		rstrnt-report-result "$TNAME/tests/$test_case" WARN 2
 		ret=2
 	fi
 
@@ -246,6 +239,12 @@ function get_test_cases_nvme
 	fi
 	echo $testcases
 }
+
+bash $CDIR/build.sh
+if (( $? != 0 )); then
+	rstrnt-report-result "build" FAIL 1
+	exit 0
+fi
 
 testcases_default=""
 testcases_default+=" $(get_test_cases_block)"
