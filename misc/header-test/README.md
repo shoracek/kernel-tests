@@ -9,7 +9,12 @@ Test Maintainer: [Jeff Bastian](mailto:jbastian@redhat.com)
  - gcc
  - python
 
+### Install dependencies
+```bash
+root# bash ../../cki_bin/pkgs_install.sh metadata
+```
+
 ### Execute the test
 ```bash
-$ make run
+bash ./runtest.sh
 ```

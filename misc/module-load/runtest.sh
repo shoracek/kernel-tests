@@ -22,6 +22,8 @@
 . /usr/share/beakerlib/beakerlib.sh || exit 1
 . ../../cki_lib/libcki.sh || exit 1
 
+TEST="misc/module-load"
+
 # Commands in this section are provided by test developer.
 # ---------------------------------------------
 
