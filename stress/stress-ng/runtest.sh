@@ -105,9 +105,8 @@ EOF
     if grep -q 'Red Hat Enterprise Linux.*release 7.*' /etc/redhat-release ; then
         rpmdev-vercmp "$(rpm -q --qf '%{epochnum}:%{version}-%{release}\n' selinux-policy)" "0:3.13.1-175.el7" >/dev/null
         if [ $? -eq 12 ]; then
-            rlRun "yum -y install checkpolicy policycoreutils policycoreutils-python" 0 "Installing SELinux development tools"
-            rlRun "checkmodule -M -m stress-ng-dccp.te -o stress-ng-dccp.mod" 0 "Compiling stress-ng-dccp SELinux module"
-            rlRun "semodule_package -o stress-ng-dccp.pp -m stress-ng-dccp.mod" 0 "Packaging stress-ng-dccp SELinux module"
+            rlRun "yum -y install selinux-policy-devel" 0 "Installing SELinux development tools"
+            rlRun "make -f /usr/share/selinux/devel/Makefile stress-ng-dccp.pp" 0 "Building stress-ng-dccp SELinux module"
             rlRun "semodule -i stress-ng-dccp.pp" 0 "Installing stress-ng-dccp SELinux module"
         fi
     fi
@@ -133,6 +132,11 @@ rlPhaseStartCleanup
         if systemctl list-units --all | grep -qw systemd-coredump.socket ; then
             rlRun "systemctl unmask systemd-coredump.socket" 0 "Unmasking systemd-coredump.socket"
         fi
+    fi
+
+    # remove selinux module
+    if semodule -l | grep -q stress-ng-dccp ; then
+        rlRun "semodule -r stress-ng-dccp" 0 "Removing stress-ng-dccp SELinux module"
     fi
 rlPhaseEnd
 
