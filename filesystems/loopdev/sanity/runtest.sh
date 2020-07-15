@@ -5,7 +5,7 @@
 
 TEST="filesystems/loopdev/sanity"
 LOOKASIDE="http://www.iozone.org/src/current"
-TARGET="iozone3_489"
+TARGET="iozone3_490"
 
 PS4='+ $(date "+%s.%N")\011 '
 set -x
