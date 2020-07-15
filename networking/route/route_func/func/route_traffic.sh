@@ -123,6 +123,10 @@ do
 	[ x"$version" == x"4" ] && ping=ping || ping=ping6
 	#default route
 	vrun $route_host "nohup tcpdump -U -i $R_L_IF1 -p -nnle > route_addr_pcap.log &"
+	for i in {1..10}
+	do
+		[ -f route_addr_pcap.log ] && break || sleep 1
+	done
 	rlRun "sleep 2"
 	rlRun "vrun $C_HOSTNAME $ping ${S_IP[$version]} -c 5"
 	rlRun "sleep 3"
@@ -130,6 +134,7 @@ do
 	rlRun "sleep 2"
 	rlRun "vrun $route_host cat route_addr_pcap.log | grep \"> ${S_IP[$version]}\""
 	[ $? -ne 0 ] && rlRun "vrun $route_host cat route_addr_pcap.log"
+	rm -f route_addr_pcap.log
 
 	#change route
 	rlRun "vrun $route_host ip -$version route add ${S_IP[$version]} dev $R_L_IF2 via ${R_R_IP2[$version]}"
@@ -137,6 +142,10 @@ do
 	rlRun "vrun $route_host ip -$version route list"
 	rlRun "vrun $route_host ip -$version route get ${S_IP[$version]}"
 	vrun $route_host "nohup tcpdump -U -i $R_L_IF2 -p -nnle > route_addr_pcap.log &"
+	for i in {1..10}
+	do
+		[ -f route_addr_pcap.log ] && break || sleep 1
+	done
 	rlRun "sleep 2"
 	rlRun "vrun $C_HOSTNAME $ping ${S_IP[$version]} -c 5"
 	rlRun "sleep 3"
@@ -144,6 +153,7 @@ do
 	rlRun "sleep 2"
 	rlRun "vrun $route_host cat route_addr_pcap.log | grep \"> ${S_IP[$version]}\""
 	[ $? -ne 0 ] && rlRun "vrun $route_host cat route_addr_pcap.log"
+	rm -f route_addr_pcap.log
 	rlRun "vrun $route_host ip -$version route del ${S_IP[$version]} dev $R_L_IF2 via ${R_R_IP2[$version]}"
 	rlRun "vrun $route_host ip -$version route del ${S_IP[$version]} dev $R_L_IF2 via ${R_R_IP2[$version]}" "0-255"
 
@@ -162,6 +172,10 @@ do
 		fi
 		rlRun "vrun $route_host ip -$version route get ${multi_addr[$version]}"
 		vrun $route_host "nohup tcpdump -U -i $R_L_IF1 -p -nnle > route_addr_pcap.log &"
+		for i in {1..10}
+		do
+			[ -f route_addr_pcap.log ] && break || sleep 1
+		done
 		rlRun "sleep 2"
 		rlRun "vrun $route_host $ping ${multi_addr[$version]} -c 5" "0,1"
 		rlRun "sleep 2"
@@ -169,6 +183,7 @@ do
 		rlRun "sleep 2"
 		rlRun "vrun $route_host cat route_addr_pcap.log | grep \"> ${multi_addr[$version]}\""
 		[ $? -ne 0 ] && rlRun "vrun $route_host cat route_addr_pcap.log"
+		rm -f route_addr_pcap.log
 		if [ x"$route_change" == x"1" ]
 		then
 			[ x"$version" == x"4" ] && \
@@ -181,6 +196,10 @@ do
 			rlRun "vrun $route_host ip -$version route add ${multi_addr[$version]} dev $R_L_IF2 via ${R_R_IP2[$version]} table local"
 		rlRun "vrun $route_host ip -$version route get ${multi_addr[$version]}"
 		vrun $route_host "nohup tcpdump -U -i $R_L_IF2 -p -nnle > route_addr_pcap.log &"
+		for i in {1..10}
+		do
+			[ -f route_addr_pcap.log ] && break || sleep 1
+		done
 		rlRun "sleep 2"
 		rlRun "vrun $route_host $ping ${multi_addr[$version]} -c 5" "0,1"
 		rlRun "sleep 2"
@@ -188,6 +207,7 @@ do
 		rlRun "sleep 2"
 		rlRun "vrun $route_host cat route_addr_pcap.log | grep \"> ${multi_addr[$version]}\""
 		[ $? -ne 0 ] && rlRun "vrun $route_host cat route_addr_pcap.log"
+		rm -f route_addr_pcap.log
 		[ x"$version" == x"4" ] && \
 			rlRun "vrun $route_host ip -$version route del ${multi_addr[$version]} dev $R_L_IF2 via ${R_R_IP2[$version]}" || \
 			rlRun "vrun $route_host ip -$version route del ${multi_addr[$version]} dev $R_L_IF2 via ${R_R_IP2[$version]} table local"
