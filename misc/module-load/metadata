@@ -1,0 +1,13 @@
+[General]
+name=misc/amtu
+owner=Jan Stancek <jstancek@redhat.com>
+description=Abstract Machine Test Utility
+license=GPLv3
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=wget;git;time;patch;bzip2;autoconf;glib2-devel;make;gettext;automake;gcc;libtool;bison;flex
+softDependencies=kernel-utils;coreutils
+repoRequires=cki_lib

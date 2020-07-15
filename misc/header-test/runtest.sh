@@ -15,6 +15,8 @@ export PYTHON
 # Source the common test script helpers
 . ../../cki_lib/libcki.sh || exit 1
 
+TEST="misc/header-test"
+
 # Assume the test will fail.
 result=FAIL
 

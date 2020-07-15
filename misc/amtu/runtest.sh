@@ -29,6 +29,8 @@
 # Source the common test script helpers
 . ../../cki_lib/libcki.sh || exit 1
 
+TEST="misc/amtu"
+
 # Assume the test will fail.
 result=FAIL
 

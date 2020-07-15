@@ -6,9 +6,14 @@ Test Maintainer: [Jeff Bastian](mailto:jbastian@redhat.com)
 ## How to run it
 
 ### Dependencies
-Please refer to the top-leve README.md for common dependencies. Test-specific dependencies will automatically be installed when executing 'make run'.
+Please refer to the top-leve README.md for common dependencies.
+
+### Install dependencies
+```bash
+root# bash ../../cki_bin/pkgs_install.sh metadata
+```
 
 ### Execute the test
 ```bash
-$ make run
+bash ./runtest.sh
 ```

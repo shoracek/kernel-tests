@@ -1,5 +1,5 @@
 [General]
-name=/kernel/misc/header-test
+name=misc/header-test
 owner=Jeff Bastian <jbastian@redhat.com>
 description=Sanity test for kernel-headers
 license=GPL
@@ -7,9 +7,9 @@ confidential=no
 destructive=no
 
 [restraint]
-entry_point=make run
+entry_point=bash ./runtest.sh
 dependencies[RedHatEnterpriseLinux6]=kernel-headers;gcc;bash;python
 dependencies[RedHatEnterpriseLinux7]=kernel-headers;gcc;bash;python
-dependencies[RedHatEnterpriseLinux8]=kernel-headers;gcc;bash;platform-python;python2
+dependencies[RedHatEnterpriseLinux8]=kernel-headers;gcc;bash;platform-python;python2;python3
 use_pty=false
 repoRequires=cki_lib

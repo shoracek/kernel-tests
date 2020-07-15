@@ -5,9 +5,14 @@ Test Maintainer: [Jan Stancek](mailto:jstancek@redhat.com)
 ## How to run it
 
 ### Dependencies
-Please refer to the top-leve README.md for common dependencies. Test-specific dependencies will automatically be installed when executing 'make run'. For a complete detail, see AMTUHowTo.txt
+Please refer to the top-leve README.md for common dependencies. For a complete detail, see AMTUHowTo.txt
+
+### Install dependencies
+```bash
+root# bash ../../cki_bin/pkgs_install.sh metadata
+```
 
 ### Execute the test
 ```bash
-$ make run
+bash ./runtest.sh
 ```

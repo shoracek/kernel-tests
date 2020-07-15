@@ -1,0 +1,12 @@
+[General]
+name=misc/kernel-fips-mode
+owner=Ondrej Moris <omoris@redhat.com>
+description=Test kernel FIPS 140 mode
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=crypto-policies
+repoRequires=cki_lib
