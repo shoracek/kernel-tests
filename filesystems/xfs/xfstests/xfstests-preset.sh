@@ -57,6 +57,7 @@ function preset_testparams()
 	test -n "${TEST_PARAM_GITBRANCH}" && GITBRANCH="${TEST_PARAM_GITBRANCH}"
 	test -n "${TEST_PARAM_GITREPO}" && GITREPO="${TEST_PARAM_GITREPO}"
 	export GITREPO=git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
+	export GITREPO_PLANB=https://github.com/guaneryu/xfstests.git
 	test -n "${TEST_PARAM_TEST_DEV}" && TEST_DEV="${TEST_PARAM_TEST_DEV}"
 	test -n "${TEST_PARAM_TEST_DIR}" && TEST_DIR="${TEST_PARAM_TEST_DIR}"
 	test -n "${TEST_PARAM_SCRATCH_DEV}" && SCRATCH_DEV="${TEST_PARAM_SCRATCH_DEV}"
