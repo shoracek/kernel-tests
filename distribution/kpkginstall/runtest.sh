@@ -144,26 +144,6 @@ function targz_install()
         mv ${xname} ${zname}
       done
       ;;
-    aarch64)
-      # These steps are required until the following patch is backported into
-      # the kernel trees: https://patchwork.kernel.org/patch/10532993/
-
-      # Check if the vmlinuz is present (a sign that the upstream patch has
-      # merged)
-      if [ -f "/boot/vmlinuz-${KVER}" ]; then
-        # Remove the vmlinux file so that only the vmlinuz is used
-        rm -f /boot/vmlinux-${KVER}
-      else
-        # Strip the vmlinux binary as required for aarch64
-        objcopy  -O binary -R .note -R .note.gnu.build-id -R .comment -S /boot/vmlinux-${KVER} /tmp/vmlinux-${KVER}
-
-        # Compress the stripped vmlinux
-        cat /tmp/vmlinux-${KVER} | gzip -n -f -9 > /boot/vmlinuz-${KVER}
-
-        # Clean up temporary stripped vmlinux and the generic vmlinux in /boot
-        rm -f /tmp/vmlinux-${KVER} /boot/vmlinux-${KVER}
-      fi
-      ;;
     s390x)
       # These steps are required until the following patch is backported into
       # the kernel trees: https://patchwork.kernel.org/patch/10534813/
