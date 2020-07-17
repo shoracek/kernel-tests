@@ -123,7 +123,6 @@ function knownissue_filter()
 	tskip "copy_file_range02" unfix 
 	# Issue TBD
 	tskip "madvise09" fatal
-	# Bug 1660161 - [RHEL8] ltp/generic commands mkswap01 fails to create by-UUID device node in aarch64
 	# Issue TBD
 	tskip "memfd_create03" unfix
 	# this case always make the beaker task abort with 'incrementing stop' msg
@@ -143,25 +142,15 @@ function knownissue_filter()
 	tskip "oom.*" fatal
 	# fs_fill test exceeds timeout, TBD adjust timeout settings
 	tskip "fs_fill" unfix
-	# Requires the following kernel fixes
-	# https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a08bf91ce28
-	# https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2e356101e72
-	tskip "add_key05" unfix
-	# https://lists.linux.it/pipermail/ltp/2020-April/016768.html
-	tskip "ioctl_loop01 ioctl_loop05" unfix
-	# https://lists.linux.it/pipermail/ltp/2020-May/017044.html
-	tskip "nm01_sh" unfix
 	# Unable to load BPF programs on s390x/upstream kernels (FMK-1825)
 	is_arch "s390x" && tskip "bpf_prog01 bpf_prog02" unfix
-	# Bug 1842076 - ltp: ptrace09 PANIC: double fault, error_code: 0x0
-	tskip "ptrace09" fatal
-	# pty04 is unstable, actively being discussed in LTP ML
+	# pty04 is unstable, see https://github.com/linux-test-project/ltp/issues/674
 	tskip "pty04" unfix
-	# nsproxy: restore EINVAL for non-namespace file descriptor
-	# https://lists.linux.it/pipermail/ltp/2020-June/017467.html
-	tskip "setns01" unfix
 	# https://lists.linux.it/pipermail/ltp/2020-June/017701.html
 	tskip "ptrace08" unfix
+	# [bug] parse_vdso.c is crashing on 5.8-rc5 s390x, because it wrongly reads nbucket as 0
+	# https://lore.kernel.org/lkml/9927ed18c642db002e43afe5e36fb9c18c4f9495.1594811090.git.jstancek@redhat.com/
+	is_arch "s390x" && tskip "clock_gettime04" unfix
 
 	if is_rhel8; then
                 # ------- unfix ---------
