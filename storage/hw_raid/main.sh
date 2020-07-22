@@ -141,8 +141,8 @@ kexec_boot_exec()
 
 rlJournalStart
     rlPhaseStartSetup
-        echo "REBOOTCOUNT=$REBOOTCOUNT"
-        if [ "$REBOOTCOUNT" -eq 0 ] ; then
+        echo "REBOOTCOUNT=$RSTRNT_REBOOTCOUNT"
+        if [ "$RSTRNT_REBOOTCOUNT" -eq 0 ] ; then
             install_fio
             PrepareReboot
             kdump_prepare
@@ -150,11 +150,11 @@ rlJournalStart
             FIO_Test "$device"
             sleep 5
             trigger_panic
-        elif [ "$REBOOTCOUNT" -eq 1 ] ; then
+        elif [ "$RSTRNT_REBOOTCOUNT" -eq 1 ] ; then
             FIO_Test "$device"
             sleep 5
             kexec_boot_graceful
-        elif [ "$REBOOTCOUNT" -eq 2 ] ; then
+        elif [ "$RSTRNT_REBOOTCOUNT" -eq 2 ] ; then
             FIO_Test "$device"
             sleep 5
             kexec_boot_exec
@@ -165,7 +165,7 @@ rlJournalStart
     rlPhaseEnd
 
 rlPhaseStartTest
-    rlAssertEquals "System should reboot successfully" $REBOOTCOUNT 3
+    rlAssertEquals "System should reboot successfully" $RSTRNT_REBOOTCOUNT 3
     rlAssertExists  "$crashDir/vmcore"
 rlPhaseEnd
 rlJournalPrintText
