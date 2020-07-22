@@ -23,6 +23,10 @@ function check_tests()
 				continue
 			fi
 		fi
+		if [ "$FSTYPE" == "btrfs" ] && grep -H -m 1 dmflakey tests/$XFSTEST ; then
+			echoo "Skipping dmfalkey test $XFSTEST on $FSTYPE due to unstable"
+			continue
+		fi
 
 		echoo "Running test $XFSTEST"
 		if test -f tests/$XFSTEST; then
