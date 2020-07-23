@@ -29,6 +29,8 @@
 . ../../cki_lib/libcki.sh || exit 1
 . /usr/share/beakerlib/beakerlib.sh || exit 1
 
+TEST="stress/stress-ng"
+
 # Mustangs have a hardware flaw which causes kernel warnings under stress:
 #    list_add corruption. prev->next should be next
 if type -p dmidecode >/dev/null ; then
