@@ -1,0 +1,11 @@
+[General]
+name=rt-tests/smidetect
+owner=Clark Williams <williams@redhat.com>
+description=Test to detect System Management Interrupts (SMIs)
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+repoRequires=cki_lib;rt-tests/include

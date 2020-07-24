@@ -1,0 +1,11 @@
+[General]
+name=rt-tests/rteval
+owner=Clark Williams <williams@redhat.com>
+description=PRE Verification for Real Time
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+repoRequires=cki_lib;rt-tests/include
