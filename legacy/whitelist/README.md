@@ -10,10 +10,6 @@ Check whether:
    or a kernel module,
  - there was no kABI whitelist symbol removal.
 
-## How to run it
-
-Go to the test folder `/misc/whitelist/` and issue `./runtest.sh`.
-
 ## Dependencies
 
 There are no outstanding dependencies beyond the tooling already
@@ -36,7 +32,12 @@ present in most RHEL systems. But to be pedantic:
 
 To fetch the baseline package versions, either yum or dnf is required.
 
-## Execute the test
+### Install dependencies
 ```bash
-$ make run
+root# bash ../../cki_bin/pkgs_install.sh metadata
+```
+
+### Execute the test
+```bash
+bash ./runtest.sh
 ```

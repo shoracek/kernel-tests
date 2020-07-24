@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+TEST="legacy/whitelist"
 
 # -- Handle Test Cleanup ------------------------------------------------------
 # Add any temporary files into TMP_FILES to have them cleaned up automatically,
