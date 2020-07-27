@@ -1,0 +1,11 @@
+[General]
+name=rt-tests/sched_deadline
+owner=Qiao Zhao <qzhao@redhat.com>
+description=Special deadline_test on rt kernel
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+repoRequires=cki_lib;rt-tests/include
