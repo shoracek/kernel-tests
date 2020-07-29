@@ -55,7 +55,7 @@ $(METADATA): Makefile
 	@echo "Description:     internal-testsuite" >> $(METADATA)
 	@echo "Type:            Regression" >> $(METADATA)
 	@echo "RunFor:          perf" >> $(METADATA)
-	@echo "Requires:        perf perf-debuginfo" >> $(METADATA)
+	@echo "Requires:        perf perf-debuginfo libbpf" >> $(METADATA)
 	@echo "Requires:        python-perf python3-perf" >> $(METADATA)
 	@echo "Requires:        kernel-debuginfo iputils-debuginfo dmidecode" >> $(METADATA)
 	@echo "Requires:        yum-utils dnf-utils" >> $(METADATA)
