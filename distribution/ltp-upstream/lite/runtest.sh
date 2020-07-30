@@ -85,9 +85,9 @@ function hugetlb_nr_setup()
        sed -i "s/#nr_hpage#/$nr_hpage/g" hugetlb
 
        # hugemmap05 test is a little different
-       mem_alloc_overcommit=$(echo $MEM_AVAILABLE / 3 | bc)
+       mem_alloc_overcommit=$(echo $MEM_AVAILABLE / 5 | bc)
        # reserve mem_alloc_overcommit for hugepage_size = 512MB system(eg. rhel_alt aarch64)
-       [ "$mem_alloc_overcommit" -gt "256" ] && [ "x${hpagesize}" != "x512" ] && mem_alloc_overcommit=256
+       [ "$mem_alloc_overcommit" -gt "128" ] && [ "x${hpagesize}" != "x512" ] && mem_alloc_overcommit=128
        nr_hugemmap5=$(echo $mem_alloc_overcommit / $hpagesize | bc)
        sed -i "s/#size#/${nr_hugemmap5}/g" hugetlb
 
