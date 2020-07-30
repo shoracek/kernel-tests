@@ -2,6 +2,8 @@
 
 . ../../cki_lib/libcki.sh || exit 1
 
+TEST="legacy/pci_id"
+
 # -- Handle Test Cleanup ------------------------------------------------------
 # Add any temporary files into TMP_FILES to have them cleaned up automatically,
 # as follows: TMP_FILES+=("$file").

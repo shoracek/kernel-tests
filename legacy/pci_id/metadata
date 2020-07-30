@@ -1,0 +1,13 @@
+[General]
+name=legacy/pci_id
+owner=Čestmír Kalina <ckalina@redhat.com>
+description=Ensure no pci id gets removed
+license=GPLv3
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=wget;git;patch;bzip2;autoconf;make;gettext;automake;gcc;grep;coreutils;rpm;sed;findutils;bash;cpio;gawk;xz;gzip;tar;binutils
+softDependencies=kmod;xz-lzma-compat;lzop;lz4;zstd;yum-utils
+repoRequires=legacy/shared;cki_lib

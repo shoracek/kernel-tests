@@ -30,9 +30,6 @@
 #
 # -----------------------------------------------------------------------------
 
-# Include skt environment
-. ../../cki_lib/libcki.sh || exit 1
-
 function test_fail()
 {
         echo "FAIL: $@"

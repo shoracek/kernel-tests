@@ -6,10 +6,6 @@ Test Maintainer: [Čestmír Kalina](mailto:ckalina@redhat.com)
 
 Check that no PCI ID is removed.
 
-## How to run it
-
-Go to the test folder `/misc/pci_id/` and issue `./runtest.sh`.
-
 ### Dependencies
 
 There are no outstanding dependencies beyond the tooling already
@@ -51,7 +47,12 @@ although you'll probably go by with just the first one.
 | zstd           | unzstd   |
 | tar            | tar      |
 
+### Install dependencies
+```bash
+root# bash ../../cki_bin/pkgs_install.sh metadata
+```
+
 ### Execute the test
 ```bash
-$ make run
+bash ./runtest.sh
 ```

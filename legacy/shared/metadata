@@ -1,0 +1,10 @@
+[General]
+name=legacy/shared
+owner=Čestmír Kalina <ckalina@redhat.com>
+description=Legacy environment setup library
+license=GPLv3
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=echo nothing > /dev/null
