@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOOKASIDE=https://github.com/yizhanglinux/blktests.git
+LOOKASIDE=https://github.com/osandov/blktests.git
 
 rm -rf blktests
 git clone $LOOKASIDE 
