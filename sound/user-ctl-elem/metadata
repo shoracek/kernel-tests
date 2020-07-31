@@ -1,0 +1,12 @@
+[General]
+name=sound/user-ctl-elem
+owner=Jaroslav Kysela <jkysela@redhat.com>
+description=ALSA Control (mixer) Userspace Element test
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=alsa-utils
+repoRequires=cki_lib
