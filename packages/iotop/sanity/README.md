@@ -1,6 +1,6 @@
-# audit test suite 
-Regression test for linux kernel's audit subsystem. \
-Test Maintainer: [Ondrej Moris](mailto:omoris@redhat.com)
+# packages/iotop/sanity test
+Verify that iotop can detect heavy disk load simulated by dd(1).
+Test Maintainer: [Ales Zelinka](mailto:azelinka@redhat.com) 
 
 ## How to run it
 Please refer to the top-level README.md for common dependencies.

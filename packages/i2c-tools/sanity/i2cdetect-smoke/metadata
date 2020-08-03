@@ -1,0 +1,12 @@
+[General]
+name=packages/i2c-tools/sanity/i2cdetect-smoke
+owner=Lukas Zachar <lzachar@redhat.com>
+description=Load i2c-dev module and try i2cdetect -l
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=i2c-tools
+repoRequires=cki_lib

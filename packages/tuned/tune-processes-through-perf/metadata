@@ -1,13 +1,12 @@
 [General]
-name=/CoreOS/tuned/Sanity/tune-processes-through-perf
-owner=Petr Sklenar<psklenar@redhat.com>
+name=packages/tuned/tune-processes-through-perf
+owner=Petr Sklenar <psklenar@redhat.com>
 description=Tuned processes through perf test
 license=GPLv2
 confidential=no
 destructive=no
 
 [restraint]
-entry_point=make run
-dependencies=beakerlib;beakerlib-redhat;tuned
-softDependencies=python3-lxml
-repoRequires=packages/tuned/basic
+entry_point=bash ./runtest.sh
+dependencies=tuned
+repoRequires=packages/tuned/basic;cki_lib

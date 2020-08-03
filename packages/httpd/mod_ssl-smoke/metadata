@@ -8,6 +8,6 @@ destructive=no
 
 [restraint]
 entry_point=bash ./runtest.sh
-dependencies=httpd;mod_ssl
-softDependencies=python;python2;python3;python3-lxml
+dependencies=httpd;mod_ssl;python2;python3
+softDependencies=python
 repoRequires=packages/openssl/Library/certgen;packages/httpd/Library/http;cki_lib

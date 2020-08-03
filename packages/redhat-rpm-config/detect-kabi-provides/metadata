@@ -1,0 +1,12 @@
+[General]
+name=packages/redhat-rpm-config/detect-kabi-provides
+owner=Karel Srot <ksrot@redhat.com>
+description=Test for BZ#1004930
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=redhat-rpm-config;rpm-build;kernel-devel
+repoRequires=cki_lib

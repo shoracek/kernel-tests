@@ -36,7 +36,7 @@ rlJournalStart
 rlPhaseStartTest
     rlAssertRpm $PACKAGE
     rlLog "running io load generation sscript"
-    ./loadgen &
+    bash ./loadgen &
     LOADGEN_PID=$!
     echo "pid: $LOADGEN_PID"
     rlLog "running iotop in batch mode fro a while..."

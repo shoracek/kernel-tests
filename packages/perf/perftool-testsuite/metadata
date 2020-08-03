@@ -1,0 +1,13 @@
+[General]
+name=packages/perf/perftool-testsuite
+owner=Michael Petlan <mpetlan@redhat.com>
+description=Wrapper to run upstream perftool test suite
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=coreutils-debuginfo;yum-utils;perf;virt-what;elfutils;kernel-debuginfo;kernel-debug-debuginfo;git;bc;gcc-c++
+softDependencies=dnf-utils;libbpf
+repoRequires=cki_lib
