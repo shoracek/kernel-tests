@@ -53,6 +53,7 @@ $(METADATA): Makefile
 	@echo "Requires:     @development" >> $(METADATA)
 	@echo "Requires:     numactl numactl-devel" >> $(METADATA)
 	@echo "Requires:     ethtool" >> $(METADATA)
+	@echo "Requires:     sysstat" >> $(METADATA)
 	@echo "repoRequires: distribution/ltp-upstream/include" >> $(METADATA)
 	@echo "repoRequires: cki_lib" >> $(METADATA)
 	@echo "Environment:  AVC_ERROR=+no_avc_check" >> $(METADATA)
