@@ -179,6 +179,8 @@ function ltp_test_pre()
 
 	ulimit -c unlimited && echo "ulimit -c unlimited"
 
+	mpstat 90 | tee /dev/null > /dev/kmsg &
+
 	# if FSTYP is set, we're testing filesystem, enable fs related requirements
 	# to get larger test coverage and test the correct fs.
 	# overlayfs is special, no mkfs.overlayfs is available, and tests need LTP_DEV
@@ -219,6 +221,10 @@ function ltp_test_end()
 	else
 		EnableNTP || test_msg warn "Enable NTP failed"
 	fi
+
+	kill -s SIGINT $(pidof mpstat)
+	sleep 2
+	kill -9 $(pidof mpstat)
 
 	SubmitLog $DEBUGLOG
 }
