@@ -1,0 +1,13 @@
+[General]
+name=packages/redhat-rpm-config/kabi-whitelist-not-found
+owner=Karel Srot <ksrot@redhat.com>
+description=Test for BZ#1126086
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=redhat-rpm-config;kernel-abi-whitelists
+softDependencies=kernel-rpm-macros
+repoRequires=cki_lib

@@ -42,6 +42,7 @@ rlJournalStart
         rlFileBackup "/usr/lib/tuned/balanced/tuned.conf"
 
         rlRun "cp test-tuned-perf /usr/bin/test-tuned-perf"
+        rlRun "chmod +x /usr/bin/test-tuned-perf"
 
 # Format is: <groupname>:<sched>:<prio>:affinity:<regex>
 # group.GROUPNAME=RULE_PRIO:SCHED:PRIO:AFFINITY:REGEX

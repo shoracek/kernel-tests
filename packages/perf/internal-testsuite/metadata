@@ -1,0 +1,13 @@
+[General]
+name=packages/perf/internal-testsuite
+owner=Michael Petlan <mpetlan@redhat.com>
+description=Perf internal test suite for CKI
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=kernel-debuginfo;iputils-debuginfo;perf;perf-debuginfo;yum-utils
+softDependencies=dmidecode;dnf-utils;python-perf;python3-perf;libbpf
+repoRequires=cki_lib
