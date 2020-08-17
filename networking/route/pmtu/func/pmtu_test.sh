@@ -12,6 +12,7 @@ pmtu_test()
 
 rlPhaseStartSetup pmtu_env_setup_$DO_SEC
 
+	rlRun "default_pmtu_cleanup" "0-255"
 	rlRun "default_pmtu_setup"
 	rlRun "$CLIENTNS ip addr sh"
 	rlRun "$SERVERNS ip addr sh"
