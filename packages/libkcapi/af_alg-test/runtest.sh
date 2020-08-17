@@ -21,14 +21,29 @@
 
 . /usr/share/beakerlib/beakerlib.sh
 
-GIT_URL="https://github.com/smuellerDD/libkcapi"
-GIT_REF="v1.2.0"
+GIT_URL="${GIT_URL:-https://github.com/smuellerDD/libkcapi}"
+GIT_REF="${GIT_REF:-b612c52c5ccf021d01e6c786db1a31a697f21d97}"
+
+function version_le() {
+    { echo "$1"; echo "$2"; } | sort -V | tail -n 1 | grep -qx "$2"
+}
+
+function kver_ge() { version_le "$1" "$(uname -r)"; }
+function kver_lt() { ! kver_ge "$1"; }
+function kver_le() { version_le "$(uname -r)" "$1"; }
+function kver_gt() { ! kver_le "$1"; }
 
 rlJournalStart
     rlPhaseStartSetup
         rlRun "git clone '$GIT_URL' libkcapi"
         rlRun "(cd libkcapi && git checkout $GIT_REF)"
         rlRun "(cd libkcapi && autoreconf -i)"
+
+        # Old versions of aes_neon_bs cause some tests to fail. Fixed in:
+        # https://bugzilla.redhat.com/show_bug.cgi?id=1826982
+        if rlIsRHEL && kver_lt 4.18.0-193.15.el8; then
+            rlRun "rmmod aes_neon_bs" 0-1 "Remove buggy aes_neon_bs module"
+        fi
     rlPhaseEnd
 
     rlPhaseStartTest
