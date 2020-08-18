@@ -51,7 +51,7 @@ function ltp_test_build()
 	fi
 
 	pushd ltp > /dev/null 2>&1
-	git checkout d2768c84eb5e863e602d40523760ff32c0494046
+	git checkout 4076d4767cd8c94b31344d8a761069c5903520f6
 	# Timing on systems with shared resources (and high steal time) is not accurate, apply patch for non bare-metal machines
 	patch -p1 < ../patches/ltp-include-relax-timer-thresholds-for-non-baremetal.patch
 	# Disable btrfs testing
