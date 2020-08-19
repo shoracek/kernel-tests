@@ -1,0 +1,12 @@
+[General]
+name=sound/aloop
+owner=Jaroslav Kysela <jkysela@redhat.com>
+description=ALSA PCM loopback test (snd-aloop)
+license=GPLv2
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=alsa-utils;python2;python3
+repoRequires=cki_lib

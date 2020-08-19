@@ -15,11 +15,8 @@
 
 # Include rhts environment
 . ../../cki_lib/libcki.sh || exit 1
-. /usr/share/beakerlib/beakerlib.sh || exit 1
 . ./vercmp || exit 1
-
-# Include cki library
-. ../../cki_lib/libcki.sh
+. _env
 
 echo -e "\n"s{$SERVERS} c{$CLIENTS}
 MultiHost=yes

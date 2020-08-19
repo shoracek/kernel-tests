@@ -31,4 +31,3 @@ elif cmd == "check":
   fp.close()
   if i < frames:
     sys.exit(12)
-    
