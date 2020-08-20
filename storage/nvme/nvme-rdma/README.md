@@ -1,6 +1,6 @@
-# storage/nvme-rdma-tcp test suite
+# storage/nvme/nvme-rdma test suite
 
-Storage: nvme rdma|tcp test
+Storage: nvme rdma test
 Test Maintainer: [Yi Zhang](mailto:yi.zhang@redhat.com)
 
 ## How to run it

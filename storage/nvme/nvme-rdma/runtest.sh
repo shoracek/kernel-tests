@@ -20,10 +20,10 @@
 FILE=$(readlink -f $BASH_SOURCE)
 NAME=$(basename $FILE)
 CDIR=$(dirname $FILE)
-TNAME="storage/nvme_rdma_tcp"
-TRTYPE=${TRTYPE:-"rdma tcp"}
+TNAME="storage/nvme/nvme-rdma"
+TRTYPE=${TRTYPE:-"rdma"}
 
-source $CDIR/../../cki_lib/libcki.sh
+source $CDIR/../../../cki_lib/libcki.sh
 
 function is_rhel7
 {
@@ -41,10 +41,11 @@ function is_rhel7
 
 function enable_nvme_core_multipath
 {
+	modprobe nvme_core
 	if [ -e "/sys/module/nvme_core/parameters/multipath" ]; then
 		modprobe -r nvme nvme_core
-		modprobe nvme-core multipath=Y
-		modprobe nvme
+		echo "options nvme_core multipath=Y"  > /etc/modprobe.d/nvme.conf
+		modprobe nvme-core nvme
 		#wait enough time for NVMe disk initialized
 		sleep 5
 	fi
@@ -84,20 +85,20 @@ function do_test
 	typeset trtype=$3
 
 	typeset this_case=$test_ws/tests/$test_case
-	echo ">>> $(get_timestamp) | Start to run test case nvme_$trtype: $this_case ..."
+	echo ">>> $(get_timestamp) | Start to run test case nvme-$trtype: $this_case ..."
 	(cd $test_ws && nvme_trtype=$trtype ./check $test_case)
 	typeset result=$(get_test_result $test_ws $test_case)
-	echo ">>> $(get_timestamp) | End nvme_$trtype: $this_case | $result"
+	echo ">>> $(get_timestamp) | End nvme-$trtype: $this_case | $result"
 
 	typeset -i ret=0
 	if [[ $result == "PASS" ]]; then
-		rstrnt-report-result "nvme_$trtype: $TNAME/tests/$test_case" PASS 0
+		rstrnt-report-result "nvme-$trtype: $TNAME/tests/$test_case" PASS 0
 		ret=0
 	elif [[ $result == "FAIL" ]]; then
-		rstrnt-report-result "nvme_$trtype: $TNAME/tests/$test_case" FAIL 1
+		rstrnt-report-result "nvme-$trtype: $TNAME/tests/$test_case" FAIL 1
 		ret=1
 	else
-		rstrnt-report-result "nvme_$trtype: $TNAME/tests/$test_case" WARN 2
+		rstrnt-report-result "nvme-$trtype: $TNAME/tests/$test_case" WARN 2
 		ret=2
 	fi
 
@@ -150,51 +151,13 @@ function get_test_cases_rdma
 	echo $testcases
 }
 
-function get_test_cases_tcp
-{
-	typeset testcases=""
-	if ! is_rhel7; then
-		testcases+=" nvme/003"
-		testcases+=" nvme/004"
-		testcases+=" nvme/005"
-		testcases+=" nvme/006"
-		testcases+=" nvme/007"
-		testcases+=" nvme/008"
-		testcases+=" nvme/009"
-		testcases+=" nvme/010"
-		testcases+=" nvme/011"
-		testcases+=" nvme/012"
-		testcases+=" nvme/013"
-		testcases+=" nvme/014"
-		testcases+=" nvme/015"
-		testcases+=" nvme/018"
-		testcases+=" nvme/019"
-		testcases+=" nvme/020"
-		testcases+=" nvme/021"
-		testcases+=" nvme/022"
-		testcases+=" nvme/023"
-		testcases+=" nvme/024"
-		testcases+=" nvme/025"
-		testcases+=" nvme/026"
-		testcases+=" nvme/027"
-		testcases+=" nvme/028"
-		testcases+=" nvme/029"
-		testcases+=" nvme/030"
-		testcases+=" nvme/031"
-
-	fi
-	echo $testcases
-}
-
-bash $CDIR/build.sh
+bash $CDIR/../include/build.sh
 if (( $? != 0 )); then
 	rlLog "Abort test because build env setup failed"
 	rstrnt-abort --server $RSTRNT_RECIPE_URL/tasks/$TASKID/status
 fi
 
 enable_nvme_core_multipath
-
-is_rhel7 && TRTYPE="rdma" # RHEL7 doesn't support nvme tcp
 
 test_ws=$CDIR/blktests
 ret=0
