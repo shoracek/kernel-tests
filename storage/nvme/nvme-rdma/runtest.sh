@@ -23,7 +23,7 @@ CDIR=$(dirname $FILE)
 TNAME="storage/nvme/nvme-rdma"
 TRTYPE=${TRTYPE:-"rdma"}
 
-source $CDIR/../../cki_lib/libcki.sh
+source $CDIR/../../../cki_lib/libcki.sh
 
 function is_rhel7
 {
@@ -41,10 +41,11 @@ function is_rhel7
 
 function enable_nvme_core_multipath
 {
+	modprobe nvme_core
 	if [ -e "/sys/module/nvme_core/parameters/multipath" ]; then
 		modprobe -r nvme nvme_core
-		modprobe nvme-core multipath=Y
-		modprobe nvme
+		echo "options nvme_core multipath=Y"  > /etc/modprobe.d/nvme.conf
+		modprobe nvme-core nvme
 		#wait enough time for NVMe disk initialized
 		sleep 5
 	fi
@@ -150,7 +151,7 @@ function get_test_cases_rdma
 	echo $testcases
 }
 
-bash $CDIR/build.sh
+bash $CDIR/../include/build.sh
 if (( $? != 0 )); then
 	rlLog "Abort test because build env setup failed"
 	rstrnt-abort --server $RSTRNT_RECIPE_URL/tasks/$TASKID/status
