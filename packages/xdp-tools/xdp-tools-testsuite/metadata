@@ -1,0 +1,13 @@
+[General]
+name=packages/xdp-tools/xdp-tools-testsuite
+owner=Stepan Horacek <shoracek@redhat.com>
+description=Wrapper to run upstream xdp-tools test suite
+license=GPLv3
+confidential=no
+destructive=no
+
+[restraint]
+entry_point=bash ./runtest.sh
+dependencies=git;xdp-tools;make;gcc;clang;llvm;m4;libbpf;libbpf-devel;libpcap;libpcap-devel;wireshark;ethtool;tcpdump;nmap-ncat
+softDependencies=python3;python3-bcc;
+repoRequires=cki_lib
