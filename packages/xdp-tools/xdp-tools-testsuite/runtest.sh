@@ -49,9 +49,9 @@ check_version()
 
 rlJournalStart
         rlPhaseStartSetup
-                check_version "xdpdump --version" "1.0.1"
-                check_version "xdp-filter status --version" "1.0.1"
-                check_version "xdp-loader status --version" "1.0.1"
+                check_version "xdpdump --version" "1.0.0"
+                check_version "xdp-filter status --version" "1.0.0"
+                check_version "xdp-loader status --version" "1.0.0"
 
                 rlRun "git clone https://github.com/xdp-project/xdp-tools"
                 if [ $? -ne 0 ]; then
